@@ -1,0 +1,247 @@
+
+/* @font-face {
+    font-family: 'MyFont';
+    src: url('./Tolkien.ttf') format("truetype");
+    font-weight: 600;
+    font-style: normal;
+  }
+   */
+body {
+    margin: 0;
+    padding: 0px
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#formSpace {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: #f8fafc;
+    background-color: #64748b;
+    padding: 10px;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+.dragger {
+    width: 250px;
+    height: 30px;
+    background-color: #0f172a;
+}
+
+
+.button {
+    width: 200px;
+    height: 75px;
+    cursor: pointer;
+    background-color: #334155;
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 24px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 7px;
+}
+
+.button:hover {
+    filter: brightness(80%);
+    background-color: #64748b;
+    color: #f8fafc;
+}
+
+
+.button:active {
+    background-color: #1e293b;
+    color: #f8fafc;
+    box-shadow: 0 5px rgb(0, 0, 0);
+    transform: translateY(4px);
+}
+
+.project {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    background-color: #e2e8f0;
+    color: #0f172a;
+    padding: .5rem;
+    gap: 20px
+}
+
+#projecttitleBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: .5rem;
+    gap: 4rem;
+    align-items: center;
+    
+   
+}
+
+.active {
+    width: 200px;
+    padding: .7rem;
+    font-size: 30px;
+    font-weight: 700;
+    background-color: #334155;
+    color:#f8fafc;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: 2px solid #0f172a;
+    border-radius: 7px;
+    text-align: center;
+    margin: auto;
+    border: 3px solid blue
+}
+
+.inactive {
+    width: 200px;
+    padding: .7rem;
+    font-size: 30px;
+    font-weight: 700;
+    background-color: #334155;
+    color:#f8fafc;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: 2px solid #0f172a;
+    border-radius: 7px;
+    text-align: center;
+    margin: auto;
+}
+
+
+#display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 10px;
+    gap: 20px;
+}
+.card {
+    border: 2px solid black;
+    background-color: #cbd5e1;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 5px;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 250px;
+    height: 200px;
+}
+
+.priorityColor {
+    width: 150px;
+    height: 15px;
+    border-radius: 10px;
+}
+
+#High {
+    background-color: red;
+}
+
+#Medium {
+    background-color: yellow;
+}
+
+#Low {
+    background-color: green;
+}
+
+
+#content {
+    width: 35rem;
+    background-color: #1e293b;
+    color: #f8fafc;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    padding-top: 5px;
+    border-radius: 10px;
+}
+
+.form {
+    width: 35rem;
+    background-color: #1e293b;
+    color: #f8fafc;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    padding-top: 5px;
+    border-radius: 10px;
+}
+
+.label {
+    font-size: 22px;
+    font-weight: 700;
+    width: 20rem;
+    color: #f8fafc;
+    padding: 15px;
+    gap: 5px;
+   background-color: #475569;
+    /* background-size: 100% 100%;
+    background-position: center center; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    border-radius: 10px;
+    box-shadow: rgb(0 0 0 / 40%) 20px 5px 10px, rgb(0 0 0 / 30%) 5px 10px 0px -10px, rgb(0 0 0 / 20%) 6px -5px 18px inset;
+}
+
+
+.text {
+    text-align: center;
+}
+
+.item, .listItem {
+    /* font-family: 'MyFont'; */
+    font-size: 22px;
+    font-weight: 500;
+    width: 15rem;
+    color: black;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=text] {
+   border: 4px solid #1e293b;
+   border-radius: 10px;
+   background-color: #f8fafc;
+}
+
+input[type=text]:focus {
+    border: 4px solid #0f172a
+  }
+
+#description {
+    height: 5rem;
+}
+
+.image {
+    width: 200px;
+}
