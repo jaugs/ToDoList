@@ -150,7 +150,7 @@ function switchProject(elem){
 function addnewProject(){
     let titleBar = document.getElementById('projecttitleBar');
     let defaultProject = currentProject();
-    console.log(defaultProject);
+    //console.log(defaultProject);
     let newProject = document.createElement('div');
     newProject.setAttribute('class', 'active');
     defaultProject.removeAttribute('class', 'active')
@@ -158,7 +158,7 @@ function addnewProject(){
     let newProjectTitle = document.getElementById('projectTitle').value;
     let newArr = []
    projectObj[newProjectTitle] = newArr
-   console.log(projectObj);
+   //console.log(projectObj);
     newProject.setAttribute('id', newProjectTitle);
     newProject.innerText = newProjectTitle;
     titleBar.appendChild(newProject);
@@ -183,6 +183,7 @@ function hideProjectForm() {
 
 
 function addCards() {
+    //console.log(projectObj);
     let display = document.getElementById('display');
     let project = currentProject();
     let title = project.attributes['id'].value;
@@ -193,45 +194,77 @@ function addCards() {
             allCards[i].remove();
         }
     }
+
+
     for (let i = 0; i < currentProjectArray.length; i++) {
+        if (currentProjectArray[i].project == title) {
+        displayCard(currentProjectArray[i]);
+    }}
+
+    function displayCard(arr) {
+
+    
         let card = document.createElement('div');
            card.setAttribute('class', 'card');
-           card.setAttribute('id', `toDo_${currentProjectArray[i].number}`);
+           card.setAttribute('id', `toDo_${arr.number}`);
            display.appendChild(card);
+           let cardTitle = document.createElement('div');
+           cardTitle.setAttribute('class', 'cardBar');
+           card.appendChild(cardTitle);
+           let cardBody = document.createElement('div');
+           cardBody.setAttribute('class', 'cardBody');
+           card.appendChild(cardBody);
            let priorityColor = document.createElement('div');
            priorityColor.setAttribute('class', 'priorityColor');
-           priorityColor.setAttribute('id', currentProjectArray[i].priority);
-            card.appendChild(priorityColor);
+           priorityColor.setAttribute('id', arr.priority);
+            cardTitle.appendChild(priorityColor);
 
             let expandButton = document.createElement('button');
-            expandButton.setAttribute('id', `expand_${currentProjectArray[i].number}`);
+            expandButton.setAttribute('id', `expand_${arr.number}`);
             expandButton.setAttribute('class', 'expandButton');
-            expandButton.innerText = 'Expand View';
-            card.appendChild(expandButton);
+            expandButton.innerText = 'Expand';
+            cardTitle.appendChild(expandButton);
 
-           card.appendChild(newItem(currentProjectArray[i].title));
-           card.appendChild(newItem(currentProjectArray[i].dueDate));
+           cardBody.appendChild(newItem(arr.title));
+           cardBody.appendChild(newItem(arr.dueDate));
+           let details = document.createElement('div');
+            details.setAttribute('id', 'details');
+            details.innerText = arr.description;
 
            expandButton.onclick = () => {
-            let details = document.createElement('div');
-            details.setAttribute('id', 'details');
-            details.innerText = currentProjectArray[i].description;
-            card.appendChild(details);
-            card.appendChild(collapseButton);
-            card.removeChild(expandButton);
+            cardBody.appendChild(details);
+            cardTitle.appendChild(collapseButton);
+            cardTitle.removeChild(expandButton);
 
             collapseButton.onclick = () => {
-                card.removeChild(details);
-                card.removeChild(collapseButton);
-                card.appendChild(expandButton);
+                cardBody.removeChild(details);
+                cardTitle.removeChild(collapseButton);
+                cardTitle.appendChild(expandButton);
             };
        }
        let collapseButton = document.createElement('button');
-           collapseButton.setAttribute('id', `collapse_${currentProjectArray[i].number}`);
-           collapseButton.setAttribute('class', 'button');
-           collapseButton.innerText = 'Collapse View';
-           cardDrag();
+           collapseButton.setAttribute('id', `collapse_${arr.number}`);
+           collapseButton.setAttribute('class', 'collapseButton');
+           collapseButton.innerText = 'Hide';
+          cardDrag(card);
     }
+    
+    let allInactive = document.querySelectorAll('.inactive')
+    //console.log(allInactive);
+    for (let k = 0; k < allInactive.length; k++) {
+        //console.log(allInactive[k]);
+        let projectTitle = allInactive[k].attributes['id'].value;
+        let projectArray = projectObj[projectTitle];
+       // console.log(project);
+        for (let r = 0; r < projectArray.length; r++) {
+            if (projectArray[r].project == project.attributes['id'].value) {
+               // console.log(projectArray[r]);
+                displayCard(projectArray[r]);
+            }
+        }
+
+    }
+
 }
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
@@ -341,10 +374,11 @@ function addtoProject(){
 }
 
 
-function cardDrag() {
+function cardDrag(card) {
 
-let card = document.querySelector('.card');
-console.log(card);
+//let card = document.querySelector('.card');
+//let cardID = document.querySelector('.card')
+//let currentProject = currentProject();
 card.onmousedown = function(event) {
 
     let shiftX = event.clientX - card.getBoundingClientRect().left;
@@ -356,6 +390,7 @@ card.onmousedown = function(event) {
 
     moveCard(event.pageX, event.pageY);
 
+//moves Card at the X and Y coordinates of the page, taking account for the shifts initially when clicking on card
     function moveCard(pageX, pageY) {
         card.style.left = pageX - shiftX + 'px';
         card.style.top = pageY - shiftY + 'px';
@@ -365,46 +400,126 @@ card.onmousedown = function(event) {
 
     function onMouseMove(event) {
         moveCard(event.pageX, event.pageY);
+    
 
         card.hidden = true;
         let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
         card.hidden = false;
         if (!elemBelow) return;
-        let droppableBelow = elemBelow.closest('.projectTitle');
+        let droppableBelow = elemBelow.closest('.inactive');
         if (currentDroppable != droppableBelow) {
             if (currentDroppable) {
                 leaveDroppable(currentDroppable);
       }
       currentDroppable = droppableBelow;
       if (currentDroppable) {
-        enterDroppable(currentDroppable);
+        card.onmouseup = function() {
+            
+            document.removeEventListener('mousemove', onMouseMove);
+            currentDroppable.style.background = 'pink';
+            let newProjectName = currentDroppable.attributes['id'].value;
+            console.log(newProjectName);
+           // let allProjects = document.querySelectorAll('.inactive', '.active')
+           console.log(Object.keys(projectObj).length);
+           // let activeProject = document.querySelector('.active')
+           // let oldProjectName =  activeProject.attributes['id'].value;
+            let cardID = card.attributes['id'].value;
+            let numb = cardID.replace(/[^0-9]/g, ''); 
+            let newNum = parseInt(numb,10); 
+           // let currentProjectArray = projectObj[newProjectName];
+            //let oldProjectArray = projectObj[oldProjectName];
+            
+            Object.entries(projectObj).forEach(([key, value]) =>  {
+                console.log(value);
+                //console.log(value[number]);
+                for (let i = 0; i < value.length; i++) {
+                    if (value[i].number == newNum) {
+                    let item = value[i];
+                    item.project = newProjectName
+                }
+            }})
+                
+    
+            // for (let k = 0; k < Object.keys(projectObj).length; k++) {
+            //     console.log(projectObj);
+            //     let array = projectObj[k];
+            //     console.log(array);
+            //     for (let i = 0; i < array.length; i++) {
+            //     if (array[i].number == newNum) {
+            //     let item = array[i];
+            //     item.project = newProjectName
+            //    console.log(item);
+            // }}}
+            
+
+
+            //console.log('true')
+            card.remove();
+            addCards();
+
+
+        }
+
+
+      //  enterDroppable(currentDroppable);
+        
     }}}
 
+
     document.addEventListener('mousemove', onMouseMove);
+
     card.onmouseup = function() {
         document.removeEventListener('mousemove', onMouseMove);
-        card.onmouseup = null;
+    
+       //card.remove();
+        //addCards();
+       // let projectTitle = elem.attributes['id'].value;
+       // let newProjectArray = projectObj[projectTitle];
+       // console.log(newProjectArray);
       };
     };
 
-function enterDroppable(elem) {
-    elem.style.background = 'pink';
+// function enterDroppable(elem) {
+    
+//     elem.style.background = 'pink';
+//     let newProjectName = elem.attributes['id'].value;
+//     let activeProject = document.querySelector('.active')
+//     let oldProjectName =  activeProject.attributes['id'].value;
+//     let cardID = card.attributes['id'].value;
+//     let numb = cardID.replace(/[^0-9]/g, ''); 
+//     let newNum = parseInt(numb,10); 
+//     let currentProjectArray = projectObj[newProjectName];
+//     let oldProjectArray = projectObj[oldProjectName];
+
+
+
+//     for (let i = 0; i < projectObj[oldProjectName].length; i++) {
+//         if (oldProjectArray[i].number == newNum) {
+//         let item = oldProjectArray[i];
+//         item.project = newProjectName
+//         console.log(item);
+//     }}
+
+
+    //currentProjectArray.push(newItem)
+
+
+//console.log(newNum);
+//console.log(typeof(newNum))
+
+
    // let currentItem = document.getElementById('')
    //idnum = dragger.attr('id');
    //console.log(idnum);
-   let itemNumber = dragger.attributes['id'].value;
-   let projectDrop = elem.attributes['id'].value;
-   toDoArr[itemNumber].project = projectDrop;
-   card.onmouseup = function() {
-    card.remove()
-    document.removeEventListener('mousemove', onMouseMove);
-   }
-   console.log(toDoArr[itemNumber]);
-   console.log(toDoArr);
-  }
+   //toDoArr[itemNumber].project = projectDrop;
+
+ 
+
+  
 
   function leaveDroppable(elem) {
-   // document.removeEventListener('mousemove', onMouseMove);
+    //console.log(elem);
+   //document.removeEventListener('mousemove', onMouseMove);
     elem.style.background = '';
   }
 
