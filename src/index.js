@@ -59,11 +59,7 @@ container.appendChild(formSpace);
 createHeading();
 
 
-// let note = createListItem();
-// newItem(note.title);
-// console.log(note);
-// console.log(note.getTitle());
-// console.log(note.title);
+
 
 function createDefaultProject(){
 
@@ -75,7 +71,6 @@ let projecttitleBar = document.createElement('div');
 projecttitleBar.setAttribute('id', 'projecttitleBar')
 let projectTitle = document.createElement('div');
 projectTitle.innerText = 'My Project'
-//projectTitle.setAttribute('class', 'projectTitle');
 projectTitle.setAttribute('class', 'active');
 projectTitle.setAttribute('id', 'Default');
 defaultProject.appendChild(projecttitleBar);
@@ -95,6 +90,15 @@ addButton.addEventListener('click', createForm);
 let cardSpace = document.createElement('div');
 cardSpace.setAttribute('id', 'display');
 defaultProject.appendChild(cardSpace);
+
+let saveButton = document.createElement('button');
+saveButton.setAttribute('id', 'saveButton');
+saveButton.setAttribute('class', 'button');
+saveButton.innerText = 'Save Work';
+projecttitleBar.appendChild(saveButton);
+saveButton.addEventListener('click', saveWork);
+
+
 }
 createDefaultProject();
 
@@ -244,7 +248,7 @@ function addCards() {
        }
        let collapseButton = document.createElement('button');
            collapseButton.setAttribute('id', `collapse_${arr.number}`);
-           collapseButton.setAttribute('class', 'collapseButton');
+           collapseButton.setAttribute('class', 'expandButton');
            collapseButton.innerText = 'Hide';
           cardDrag(card);
     }
@@ -287,20 +291,21 @@ function addtoDo() {
     removeForm();
     counter++;
     addCards();
-    addtoProject();
-    //toDoArr.forEach(addtoProject);
+    //addtoProject();
+    // //toDoArr.forEach(addtoProject);
+    // localStorage.setItem( `item ${counter}`, JSON.stringify(newItem) );
+    // console.log( JSON.parse( localStorage.getItem( `item ${counter}` ) ) );
+
         }
 
-    // function displayCards() {
-    // }
-    //addtoProject(newItem);
-    // console.log(toDoArr);
-    // console.log(newItem);
- 
+function saveWork() {
+    localStorage.setItem( `projects`, JSON.stringify(projectObj) );
+    console.log( JSON.parse( localStorage.getItem( `projects` ) ) );
+}
    
-    // localStorage.setItem( `item ${counter}`, JSON.stringify(item) );
-    // console.log( JSON.parse( localStorage.getItem( `item ${counter}` ) ) );
-   //return item;
+function getWork() {
+
+}
 
 
 function removeForm() {
@@ -319,67 +324,20 @@ function removeForm() {
     //currentProject.removeChild(content);
 }
 
-function addtoProject(){
-    // let cardSpace = document.getElementById('display')
-    //         let currentNumber = counter -1;
-    //        console.log(toDoArr[currentNumber].title);
-    //        let card = document.createElement('div');
-    //        card.setAttribute('class', 'card');
-    //        card.setAttribute('id', `toDo_${toDoArr[currentNumber].number}`);
-    //        cardSpace.appendChild(card);
-
-    //        let dragger = document.createElement('div');
-    //        dragger.setAttribute('class', 'dragger');
-    //         dragger.setAttribute('id', toDoArr[currentNumber].number)
-    //         card.appendChild(dragger);
-
-    //        let priorityColor = document.createElement('div');
-    //        priorityColor.setAttribute('class', 'priorityColor');
-    //        priorityColor.setAttribute('id', toDoArr[currentNumber].priority);
-    //         card.appendChild(priorityColor);
-
-    //        card.appendChild(newItem(toDoArr[currentNumber].title));
-    //        card.appendChild(newItem(toDoArr[currentNumber].dueDate));
-
-    //        let expandButton = document.createElement('button');
-    //        expandButton.setAttribute('id', `expand_${toDoArr[currentNumber].number}`);
-    //        expandButton.setAttribute('class', 'button');
-    //        expandButton.innerText = 'Expand View';
-    //        card.appendChild(expandButton);
-    //        expandButton.onclick = () => {
-    //             let details = document.createElement('div');
-    //             details.setAttribute('id', 'details');
-    //             details.innerText = toDoArr[currentNumber].description;
-    //             card.appendChild(details);
-    //             card.appendChild(collapseButton);
-    //             card.removeChild(expandButton);
-
-    //             collapseButton.onclick = () => {
-    //                 card.removeChild(details);
-    //                 card.removeChild(collapseButton);
-    //                 card.appendChild(expandButton);
-    //             };
-    //        }
-    //        let collapseButton = document.createElement('button');
-    //        collapseButton.setAttribute('id', `collapse_${toDoArr[currentNumber].number}`);
-    //        collapseButton.setAttribute('class', 'button');
-    //        collapseButton.innerText = 'Collapse View';
-    //        cardDrag();
-
-
-
-        //}
-       // let currentProject = document.getElementById('default')
-       // let currentItem = toDoArr[]
-}
-
-
 function cardDrag(card) {
 
 //let card = document.querySelector('.card');
 //let cardID = document.querySelector('.card')
 //let currentProject = currentProject();
 card.onmousedown = function(event) {
+    let button = document.querySelector('.expandButton');
+    let elementBelow = document.elementFromPoint(event.clientX, event.clientY);
+    console.log (elementBelow);
+    if (elementBelow == button) {
+        return
+    }
+
+
 
     let shiftX = event.clientX - card.getBoundingClientRect().left;
     let shiftY = event.clientY - card.getBoundingClientRect().top;
@@ -418,19 +376,15 @@ card.onmousedown = function(event) {
             document.removeEventListener('mousemove', onMouseMove);
             currentDroppable.style.background = 'pink';
             let newProjectName = currentDroppable.attributes['id'].value;
-            console.log(newProjectName);
-           // let allProjects = document.querySelectorAll('.inactive', '.active')
-           console.log(Object.keys(projectObj).length);
-           // let activeProject = document.querySelector('.active')
-           // let oldProjectName =  activeProject.attributes['id'].value;
+            
+           
             let cardID = card.attributes['id'].value;
             let numb = cardID.replace(/[^0-9]/g, ''); 
             let newNum = parseInt(numb,10); 
-           // let currentProjectArray = projectObj[newProjectName];
-            //let oldProjectArray = projectObj[oldProjectName];
+    
             
             Object.entries(projectObj).forEach(([key, value]) =>  {
-                console.log(value);
+                //console.log(value);
                 //console.log(value[number]);
                 for (let i = 0; i < value.length; i++) {
                     if (value[i].number == newNum) {
@@ -440,20 +394,6 @@ card.onmousedown = function(event) {
             }})
                 
     
-            // for (let k = 0; k < Object.keys(projectObj).length; k++) {
-            //     console.log(projectObj);
-            //     let array = projectObj[k];
-            //     console.log(array);
-            //     for (let i = 0; i < array.length; i++) {
-            //     if (array[i].number == newNum) {
-            //     let item = array[i];
-            //     item.project = newProjectName
-            //    console.log(item);
-            // }}}
-            
-
-
-            //console.log('true')
             card.remove();
             addCards();
 
@@ -470,7 +410,9 @@ card.onmousedown = function(event) {
 
     card.onmouseup = function() {
         document.removeEventListener('mousemove', onMouseMove);
-    
+        card.remove();
+        addCards();
+
        //card.remove();
         //addCards();
        // let projectTitle = elem.attributes['id'].value;
@@ -546,60 +488,25 @@ function newItem(string) {
    // defaultProject.appendChild(viewButton);
    // viewButton.addEventListener('click', projectItems);
 
-clearStorage();
-
+//clearStorage();
+clearOut()
 let i;
 
-console.log("local storage");
+console.log(localStorage);
 for (i = 0; i < localStorage.length; i++)   {
     console.log(localStorage.key(i) + "=[" + localStorage.getItem(localStorage.key(i)) + "]");
 }
 
-console.log("session storage");
-for (i = 0; i < sessionStorage.length; i++) {
-    console.log(sessionStorage.key(i) + "=[" + sessionStorage.getItem(sessionStorage.key(i)) + "]");
-}
-
-
-
-function clearStorage() {
-    window.localStorage.clear;
-    localStorage.removeItem('item 1');
-    localStorage.removeItem('item 2');
-}
-
-// function removeElements() {
-//     let element = document.getElementById('content');
-//     while (element.firstChild) {
-//         element.removeChild(element.firstChild);
-//     }
+// console.log("session storage");
+// for (i = 0; i < sessionStorage.length; i++) {
+//     console.log(sessionStorage.key(i) + "=[" + sessionStorage.getItem(sessionStorage.key(i)) + "]");
 // }
 
 
-// let homepageButton = document.createElement('button');
-// homepageButton.innerText = "Home";
-// homepageButton.setAttribute('id', 'homebutton');
-// homepageButton.setAttribute('class', 'linkButton');
-// heading.appendChild(homepageButton);
-// homepageButton.addEventListener('click', removeElements);
-// homepageButton.addEventListener('click', createHomepage);
 
-// let menuButton = document.createElement('button');
-// menuButton.innerText = "Menu";
-// menuButton.setAttribute('id', 'menubutton');
-// menuButton.setAttribute('class', 'linkButton');
-// heading.appendChild(menuButton);
-// menuButton.addEventListener('click', removeElements);
-// menuButton.addEventListener('click', createMenu);
-
-// let contactButton = document.createElement('button');
-// contactButton.innerText = "Contact";
-// contactButton.setAttribute('id', 'contactbutton');
-// contactButton.setAttribute('class', 'linkButton');
-// heading.appendChild(contactButton);
-// contactButton.addEventListener('click', removeElements);
-// contactButton.addEventListener('click', createContact);
-
-// createHomepage();
+function clearOut() {
+    localStorage.clear();
+  
+}
 
 
