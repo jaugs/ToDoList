@@ -7,12 +7,23 @@ import './style.css';
 import { createForm } from './form.js';
 export {addtoDo};
 
+//ADD DELETE ITEM BUTTON
+//ADD MARK COMPLETE BUTTON
+//CSS
+//ADD PRIORITY/NOTES OTHER FIELDS
+//CHANGE VALUES ON  TO DOS
+//CLEAN UP/COMMENT
+
+
+
+
+
+
 let container = document.createElement('div');
 container.setAttribute('id', 'container');
 document.body.appendChild(container);
 
 let toDoArr = [];
-let counter = 0;
 let projectArr = [];
 
 
@@ -33,9 +44,55 @@ class listItem {
     }
  }
 
-const projectObj = {
-    'Default': toDoArr
+function createProjectObject() {
+    if (localStorage.length != 0) {
+        let projectObj = JSON.parse( localStorage.getItem( `projects` ));
+        console.log('hello');
+        //console.log(projectObj);
+    
+        for (const key of Object.entries(projectObj)) {
+           if (key[0] != "Default"){
+
+            let projectTitle = document.createElement('div')
+            let titleBar = document.getElementById('projecttitleBar');
+            projectTitle.setAttribute('id', key[0]);
+            projectTitle.setAttribute('class', 'inactive');
+            projectTitle.innerText = key[0];
+            titleBar.appendChild(projectTitle);
+            console.log(key[0]);
+            projectTitle.addEventListener('click', function(){switchProject(projectTitle)});
+            let defaultProject = document.getElementById('Default');
+            defaultProject.addEventListener('click', function(){switchProject(defaultProject)});
+        }}
+        //if (projectObj.length)
+
+
+        return projectObj
+       
+    } else {
+    let projectObj = {
+        'Default': toDoArr
+    }
+    console.log('empty')
+    console.log(projectObj)
+    return projectObj
+}}
+
+function createCounter() {
+    if (localStorage.length != 0) {
+        let counter = JSON.parse( localStorage.getItem( `counter` ));
+        console.log('counter found')
+        console.log(counter);
+        return counter
+    } else {
+        let counter = 0;
+        return counter
+    }
 }
+
+// const projectObj = {
+//     'Default': toDoArr
+// }
  
 
 //const projectObj = new ProjectObj('Default', toDoArr);
@@ -51,15 +108,33 @@ heading.appendChild(welcome);
 let formSpace = document.createElement('div');
 formSpace.setAttribute('id', 'formSpace');
 container.appendChild(formSpace);
+
+let saveButton = document.createElement('button');
+saveButton.setAttribute('id', 'saveButton');
+saveButton.setAttribute('class', 'button');
+saveButton.innerText = 'Save Work';
+formSpace.appendChild(saveButton);
+saveButton.addEventListener('click', saveWork);
+
+// let loadButton = document.createElement('button');
+// loadButton.setAttribute('id', 'loadButton');
+// loadButton.setAttribute('class', 'button');
+// loadButton.innerText = 'Load Work';
+// formSpace.appendChild(loadButton);
+// loadButton.addEventListener('click', getWork);
+
+let deleteButton = document.createElement('button');
+deleteButton.setAttribute('id', 'deleteButton');
+deleteButton.setAttribute('class', 'button');
+deleteButton.innerText = 'Delete Work';
+formSpace.appendChild(deleteButton);
+deleteButton.addEventListener('click', clearOut);
 // const prancingPony = new Image();
 // prancingPony.src = prancingPony2;
 // prancingPony.id="ponyLogo";
 // heading.appendChild(prancingPony);
 }
 createHeading();
-
-
-
 
 function createDefaultProject(){
 
@@ -91,17 +166,12 @@ let cardSpace = document.createElement('div');
 cardSpace.setAttribute('id', 'display');
 defaultProject.appendChild(cardSpace);
 
-let saveButton = document.createElement('button');
-saveButton.setAttribute('id', 'saveButton');
-saveButton.setAttribute('class', 'button');
-saveButton.innerText = 'Save Work';
-projecttitleBar.appendChild(saveButton);
-saveButton.addEventListener('click', saveWork);
-
 
 }
 createDefaultProject();
-
+let counter = createCounter();
+const projectObj = createProjectObject();
+addCards();
 
 
 
@@ -198,16 +268,12 @@ function addCards() {
             allCards[i].remove();
         }
     }
-
-
     for (let i = 0; i < currentProjectArray.length; i++) {
         if (currentProjectArray[i].project == title) {
         displayCard(currentProjectArray[i]);
     }}
 
     function displayCard(arr) {
-
-    
         let card = document.createElement('div');
            card.setAttribute('class', 'card');
            card.setAttribute('id', `toDo_${arr.number}`);
@@ -223,9 +289,21 @@ function addCards() {
            priorityColor.setAttribute('id', arr.priority);
             cardTitle.appendChild(priorityColor);
 
+            let editButton = document.createElement('button');
+            editButton.setAttribute('id', `edit_${arr.number}`);
+            editButton.setAttribute('class', 'cardButton');
+            editButton.innerText = 'Modify';
+            cardTitle.appendChild(editButton);
+
+            let deleteButton = document.createElement('button');
+            deleteButton.setAttribute('id', `delete_${arr.number}`);
+            deleteButton.setAttribute('class', 'cardButton');
+            deleteButton.innerText = 'Delete';
+            cardTitle.appendChild(deleteButton);
+
             let expandButton = document.createElement('button');
             expandButton.setAttribute('id', `expand_${arr.number}`);
-            expandButton.setAttribute('class', 'expandButton');
+            expandButton.setAttribute('class', 'cardButton');
             expandButton.innerText = 'Expand';
             cardTitle.appendChild(expandButton);
 
@@ -235,7 +313,22 @@ function addCards() {
             details.setAttribute('id', 'details');
             details.innerText = arr.description;
 
+            editButton.onclick = () => {
+                card.remove();
+                createForm();
+            }
+
+            deleteButton.onclick = () => {
+                let text = confirm("Are you sure you want to delete this To-Do?")
+                if (text == true) {
+                    arr.project = "deleted";
+                    console.log(arr.project)
+                } else {
+                    return
+                }}
+
            expandButton.onclick = () => {
+            console.log(details);
             cardBody.appendChild(details);
             cardTitle.appendChild(collapseButton);
             cardTitle.removeChild(expandButton);
@@ -248,7 +341,7 @@ function addCards() {
        }
        let collapseButton = document.createElement('button');
            collapseButton.setAttribute('id', `collapse_${arr.number}`);
-           collapseButton.setAttribute('class', 'expandButton');
+           collapseButton.setAttribute('class', 'cardButton');
            collapseButton.innerText = 'Hide';
           cardDrag(card);
     }
@@ -264,12 +357,7 @@ function addCards() {
             if (projectArray[r].project == project.attributes['id'].value) {
                // console.log(projectArray[r]);
                 displayCard(projectArray[r]);
-            }
-        }
-
-    }
-
-}
+            }}}}
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
 function addtoDo() {
@@ -291,23 +379,14 @@ function addtoDo() {
     removeForm();
     counter++;
     addCards();
-    //addtoProject();
-    // //toDoArr.forEach(addtoProject);
-    // localStorage.setItem( `item ${counter}`, JSON.stringify(newItem) );
-    // console.log( JSON.parse( localStorage.getItem( `item ${counter}` ) ) );
-
-        }
+}
 
 function saveWork() {
     localStorage.setItem( `projects`, JSON.stringify(projectObj) );
     console.log( JSON.parse( localStorage.getItem( `projects` ) ) );
+    localStorage.setItem( `counter`, JSON.stringify(counter) );
 }
    
-function getWork() {
-
-}
-
-
 function removeForm() {
     let titleBar = document.getElementById('projecttitleBar')
     let content = document.getElementById('content');
@@ -330,12 +409,12 @@ function cardDrag(card) {
 //let cardID = document.querySelector('.card')
 //let currentProject = currentProject();
 card.onmousedown = function(event) {
-    let button = document.querySelector('.expandButton');
+    let buttons = document.querySelectorAll('.cardButton')
     let elementBelow = document.elementFromPoint(event.clientX, event.clientY);
-    console.log (elementBelow);
-    if (elementBelow == button) {
+    for (let i = 0; i < buttons.length; i++) {
+    if (elementBelow == buttons[i]) {
         return
-    }
+    }}
 
 
 
@@ -412,52 +491,13 @@ card.onmousedown = function(event) {
         document.removeEventListener('mousemove', onMouseMove);
         card.remove();
         addCards();
-
-       //card.remove();
-        //addCards();
-       // let projectTitle = elem.attributes['id'].value;
-       // let newProjectArray = projectObj[projectTitle];
-       // console.log(newProjectArray);
       };
     };
 
 // function enterDroppable(elem) {
     
 //     elem.style.background = 'pink';
-//     let newProjectName = elem.attributes['id'].value;
-//     let activeProject = document.querySelector('.active')
-//     let oldProjectName =  activeProject.attributes['id'].value;
-//     let cardID = card.attributes['id'].value;
-//     let numb = cardID.replace(/[^0-9]/g, ''); 
-//     let newNum = parseInt(numb,10); 
-//     let currentProjectArray = projectObj[newProjectName];
-//     let oldProjectArray = projectObj[oldProjectName];
-
-
-
-//     for (let i = 0; i < projectObj[oldProjectName].length; i++) {
-//         if (oldProjectArray[i].number == newNum) {
-//         let item = oldProjectArray[i];
-//         item.project = newProjectName
-//         console.log(item);
-//     }}
-
-
-    //currentProjectArray.push(newItem)
-
-
-//console.log(newNum);
-//console.log(typeof(newNum))
-
-
-   // let currentItem = document.getElementById('')
-   //idnum = dragger.attr('id');
-   //console.log(idnum);
-   //toDoArr[itemNumber].project = projectDrop;
-
- 
-
-  
+//     }
 
   function leaveDroppable(elem) {
     //console.log(elem);
@@ -471,9 +511,6 @@ card.ondragstart = function() {
 }
 
 
-
-
-
 function newItem(string) {
     let item = document.createElement('div');
     item.setAttribute('class', 'listItem');
@@ -481,32 +518,14 @@ function newItem(string) {
     return item;
     }
     
-    // let viewButton = document.createElement('button');
-    // viewButton.setAttribute('id', 'addTodo');
-    // viewButton.setAttribute('class', 'button');
-    // viewButton.innerText = 'View new Item';
-   // defaultProject.appendChild(viewButton);
-   // viewButton.addEventListener('click', projectItems);
-
-//clearStorage();
-clearOut()
-let i;
 
 console.log(localStorage);
-for (i = 0; i < localStorage.length; i++)   {
-    console.log(localStorage.key(i) + "=[" + localStorage.getItem(localStorage.key(i)) + "]");
-}
-
-// console.log("session storage");
-// for (i = 0; i < sessionStorage.length; i++) {
-//     console.log(sessionStorage.key(i) + "=[" + sessionStorage.getItem(sessionStorage.key(i)) + "]");
-// }
 
 
 
 function clearOut() {
     localStorage.clear();
-  
+    console.log(localStorage);
 }
 
 
