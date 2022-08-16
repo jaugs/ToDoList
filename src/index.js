@@ -289,6 +289,12 @@ function addCards() {
            priorityColor.setAttribute('id', arr.priority);
             cardTitle.appendChild(priorityColor);
 
+            let completeButton = document.createElement('button');
+            completeButton.setAttribute('id', `complete_${arr.number}`);
+            completeButton.setAttribute('class', 'cardButton');
+            completeButton.innerText = 'Complete';
+            cardTitle.appendChild(completeButton);
+
             let editButton = document.createElement('button');
             editButton.setAttribute('id', `edit_${arr.number}`);
             editButton.setAttribute('class', 'cardButton');
@@ -313,8 +319,19 @@ function addCards() {
             details.setAttribute('id', 'details');
             details.innerText = arr.description;
 
+            completeButton.onclick = () => {
+                card.setAttribute('class', 'complete');
+                completeButton.innerText = 'Restart'
+                completeButton.onclick = () => {
+                    card.setAttribute('class', 'card')
+                    completeButton.innerText = 'Complete'
+                    return
+                }
+            }
+
             editButton.onclick = () => {
-                card.remove();
+                arr.project = "deleted";
+                cardTitle.removeChild(editButton);
                 createForm();
             }
 
@@ -322,13 +339,14 @@ function addCards() {
                 let text = confirm("Are you sure you want to delete this To-Do?")
                 if (text == true) {
                     arr.project = "deleted";
+                    addCards();
                     console.log(arr.project)
                 } else {
                     return
                 }}
 
            expandButton.onclick = () => {
-            console.log(details);
+            //console.log(details);
             cardBody.appendChild(details);
             cardTitle.appendChild(collapseButton);
             cardTitle.removeChild(expandButton);
