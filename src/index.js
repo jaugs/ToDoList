@@ -15,17 +15,11 @@ export {addtoDo};
 //CLEAN UP/COMMENT
 
 
-
-
-
-
 let container = document.createElement('div');
 container.setAttribute('id', 'container');
 document.body.appendChild(container);
 
 let toDoArr = [];
-let projectArr = [];
-
 
 class listItem {
     constructor(number, title, description, dueDate, priority, project) {
@@ -65,8 +59,6 @@ function createProjectObject() {
             defaultProject.addEventListener('click', function(){switchProject(defaultProject)});
         }}
         //if (projectObj.length)
-
-
         return projectObj
        
     } else {
@@ -90,13 +82,6 @@ function createCounter() {
     }
 }
 
-// const projectObj = {
-//     'Default': toDoArr
-// }
- 
-
-//const projectObj = new ProjectObj('Default', toDoArr);
-
 function createHeading() {
 let heading = document.createElement('div');
 heading.setAttribute('id', 'header');
@@ -109,19 +94,26 @@ let formSpace = document.createElement('div');
 formSpace.setAttribute('id', 'formSpace');
 container.appendChild(formSpace);
 
+let newProjectButton = document.createElement('button');
+newProjectButton.setAttribute('id', 'newProjectButton');
+newProjectButton.setAttribute('class', 'button');
+newProjectButton.innerText = 'Create New Project';
+newProjectButton.addEventListener('click', createNewProject);
+formSpace.appendChild(newProjectButton);
+
+let addButton = document.createElement('button');
+addButton.setAttribute('id', 'addTodo');
+addButton.setAttribute('class', 'button');
+addButton.innerText = 'Add new Item';
+formSpace.appendChild(addButton);
+addButton.addEventListener('click', createForm);
+
 let saveButton = document.createElement('button');
 saveButton.setAttribute('id', 'saveButton');
 saveButton.setAttribute('class', 'button');
 saveButton.innerText = 'Save Work';
 formSpace.appendChild(saveButton);
 saveButton.addEventListener('click', saveWork);
-
-// let loadButton = document.createElement('button');
-// loadButton.setAttribute('id', 'loadButton');
-// loadButton.setAttribute('class', 'button');
-// loadButton.innerText = 'Load Work';
-// formSpace.appendChild(loadButton);
-// loadButton.addEventListener('click', getWork);
 
 let deleteButton = document.createElement('button');
 deleteButton.setAttribute('id', 'deleteButton');
@@ -138,42 +130,34 @@ createHeading();
 
 function createDefaultProject(){
 
+let header = document.getElementById('header')
 const defaultProject = document.createElement('div');
 defaultProject.setAttribute('id', 'projectSpace');
 defaultProject.setAttribute('class', 'project');
-container.appendChild(defaultProject);
+header.appendChild(defaultProject);
+
 let projecttitleBar = document.createElement('div');
 projecttitleBar.setAttribute('id', 'projecttitleBar')
+let projects = document.createElement('div');
+projects.innerText = 'Projects'
+projects.setAttribute('class', 'titleField')
+projecttitleBar.appendChild(projects);
 let projectTitle = document.createElement('div');
-projectTitle.innerText = 'My Project'
+projectTitle.innerText = 'Default Project'
 projectTitle.setAttribute('class', 'active');
 projectTitle.setAttribute('id', 'Default');
-defaultProject.appendChild(projecttitleBar);
+container.appendChild(projecttitleBar);
 projecttitleBar.appendChild(projectTitle);
-let addButton = document.createElement('button');
-addButton.setAttribute('id', 'addTodo');
-addButton.setAttribute('class', 'button');
-addButton.innerText = 'Add new Item';
-projecttitleBar.appendChild(addButton);
-let newProjectButton = document.createElement('button');
-newProjectButton.setAttribute('id', 'newProjectButton');
-newProjectButton.setAttribute('class', 'button');
-newProjectButton.innerText = 'Create New Project';
-newProjectButton.addEventListener('click', createNewProject);
-projecttitleBar.appendChild(newProjectButton);
-addButton.addEventListener('click', createForm);
+
 let cardSpace = document.createElement('div');
 cardSpace.setAttribute('id', 'display');
-defaultProject.appendChild(cardSpace);
-
-
+container.appendChild(cardSpace);
 }
+
 createDefaultProject();
 let counter = createCounter();
 const projectObj = createProjectObject();
 addCards();
-
-
 
 function createNewProject(){
 
@@ -208,7 +192,7 @@ submit.addEventListener('click', addnewProject);
 function currentProject(){
     let currentProject = document.querySelector('.active');
     return currentProject
-    }
+}
 
 function switchProject(elem){
     let currentProject = document.querySelector('.active');
@@ -218,8 +202,6 @@ function switchProject(elem){
     elem.setAttribute('class', 'active')
     addCards();
 }
-
-
 
 function addnewProject(){
     let titleBar = document.getElementById('projecttitleBar');

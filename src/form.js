@@ -2,7 +2,7 @@ export {createForm};
 import { addtoDo } from './index.js';
 
 function createForm() {
-let formSpace = document.getElementById('formSpace');
+let header = document.getElementById('header');
 const content = document.createElement('div');
 let addButton = document.getElementById("addTodo");
 addButton.innerText = 'Hide';
@@ -10,7 +10,7 @@ addButton.removeEventListener('click', createForm);
 addButton.addEventListener('click', hideForm);
 content.style.display = 'block flex';
 content.setAttribute('id', 'content');
-formSpace.appendChild(content);
+header.appendChild(content);
 
  let titleLabel = document.createElement('div');
  titleLabel.setAttribute('class', 'label')
