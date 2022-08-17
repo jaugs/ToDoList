@@ -28,7 +28,8 @@ grid-template-areas:
     background-color: #e2e8f0;
     color: #1e293b;
     justify-content: center;
-    gap: 2rem;
+    align-items: center;
+    gap: 1rem;
     padding:1rem;
 
 }
@@ -57,20 +58,21 @@ h2 {
 
 
 .button {
-    width: 200px;
-    height: 75px;
+    width: 14rem;
+    /* height: 75px; */
     cursor: pointer;
     background-color: #94a3b8;
     color: #0f172a;
     font-weight: 700;
-    font-size: 24px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 22px;
     border-radius: 40px;
+    padding: 9px;
+    box-shadow: 0 2px #0f172a;
+
 }
 
 .button:hover {
-    filter: brightness(80%);
-    background-color: #64748b;
+    background-color: #334155;
     color: #f8fafc;
 }
 
@@ -78,7 +80,6 @@ h2 {
 .button:active {
     background-color: #1e293b;
     color: #f8fafc;
-    box-shadow: 0 5px rgb(0, 0, 0);
     transform: translateY(4px);
 }
 /* 
@@ -102,6 +103,13 @@ h2 {
     align-items: center;
     background-color: #e2e8f0;
     color: #1e293b;
+}
+
+.titleField {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 1px solid #0f172a;
 }
 
 .active {
