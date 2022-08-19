@@ -148,10 +148,25 @@ projectTitle.setAttribute('class', 'active');
 projectTitle.setAttribute('id', 'Default');
 container.appendChild(projecttitleBar);
 projecttitleBar.appendChild(projectTitle);
+let todoList = [];
 
+// Object.entries(projectObj).forEach(([key, value]) =>  {
+//     //console.log(value);
+//     //console.log(value[number]);
+//     for (let i = 0; i < value.length; i++) {
+//         if (value[i].project == 'Default') {
+//         let item = value[i];
+//         console.log(item);
+//         //item.project = newProjectName
+//         }
+//     }
+// })
+
+// projectTitle.appendChild(todoList);
 let cardSpace = document.createElement('div');
 cardSpace.setAttribute('id', 'display');
 container.appendChild(cardSpace);
+
 }
 
 createDefaultProject();
@@ -388,7 +403,7 @@ function saveWork() {
 }
    
 function removeForm() {
-    let titleBar = document.getElementById('projecttitleBar')
+    let formSpace = document.getElementById('formSpace')
     let content = document.getElementById('content');
     //content.style.display = 'none';
     content.remove();
@@ -398,7 +413,7 @@ function removeForm() {
     addButton.setAttribute('id', 'addTodo');
     addButton.setAttribute('class', 'button');
     addButton.innerText = 'Add new Item';
-    titleBar.appendChild(addButton);
+    formSpace.appendChild(addButton);
     addButton.addEventListener('click', createForm);
     //currentProject.removeChild(content);
 }

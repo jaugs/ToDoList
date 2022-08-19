@@ -8,13 +8,14 @@
    */
 body {
     margin: 0;
-    padding: 0px
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif
 }
 
 #container {
     display: grid;
 grid-template-columns: 1fr 6fr 6fr;
-grid-template-rows: .5fr 3fr 3fr;
+grid-template-rows: .5fr 2fr 3fr;
 grid-template-areas: 
                     "h h h"
                     "s c c"
@@ -27,10 +28,12 @@ grid-template-areas:
     flex-direction: column;
     background-color: #e2e8f0;
     color: #1e293b;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 1rem;
-    padding:1rem;
+    padding:.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
 
 }
 
@@ -108,8 +111,12 @@ h2 {
 .titleField {
     font-size: 22px;
     font-weight: 700;
+    background-color: #e2e8f0;
     color: #0f172a;
     border-bottom: 1px solid #0f172a;
+    padding-left: 3em;
+    padding-right: 3em;
+    padding-bottom: 0.3em;
 }
 
 .active {
@@ -117,8 +124,8 @@ h2 {
     padding: .7rem;
     font-size: 30px;
     font-weight: 700;
-    background-color: #334155;
-    color:#f8fafc;
+    background-color: #f3f5f9;
+    color:#0f172a;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border: 2px solid #0f172a;
     border-radius: 7px;
