@@ -7,12 +7,15 @@ import './style.css';
 import { createForm } from './form.js';
 export {addtoDo};
 
-//ADD DELETE ITEM BUTTON
-//ADD MARK COMPLETE BUTTON
+//ADD DELETE ITEM BUTTON - Done
+//ADD MARK COMPLETE BUTTON - done
 //CSS
 //ADD PRIORITY/NOTES OTHER FIELDS
-//CHANGE VALUES ON  TO DOS
+//CHANGE VALUES ON  TO DOS- done
 //CLEAN UP/COMMENT
+//form validation
+//change heading
+//delete Projects
 
 
 let container = document.createElement('div');
@@ -84,6 +87,11 @@ Object.entries(projectObj).forEach(([key, value]) =>  {
         listItem.innerText = item.title;
         listItem.setAttribute('class', 'list');
         projectTitle.appendChild(listItem);
+        let priorityColor = document.createElement('div');
+        priorityColor.setAttribute('class','listColor');
+        priorityColor.setAttribute('id', item.priority);
+        listItem.appendChild(priorityColor);
+
     }})
 }
 
@@ -474,7 +482,7 @@ card.onmousedown = function(event) {
         card.onmouseup = function() {
             
             document.removeEventListener('mousemove', onMouseMove);
-            currentDroppable.style.background = 'pink';
+            //currentDroppable.style.background = '#f3f5f9';
             let newProjectName = currentDroppable.attributes['id'].value;
             
            
@@ -523,7 +531,7 @@ card.onmousedown = function(event) {
   function leaveDroppable(elem) {
     //console.log(elem);
    //document.removeEventListener('mousemove', onMouseMove);
-    elem.style.background = '';
+    //elem.style.background = 'blue';
   }
 
 card.ondragstart = function() {
