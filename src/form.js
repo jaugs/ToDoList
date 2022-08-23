@@ -49,6 +49,7 @@ header.appendChild(content);
  content.appendChild(wrapper);
 
  let options = {
+    "Urgent": false,
     "High": false,
     "Medium": false,
     "Low": false,
