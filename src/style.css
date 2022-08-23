@@ -202,8 +202,15 @@ h2 {
 }
 
 .cardBody {
-    
+    display:grid;
     padding: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+                    "t t"
+                    "d d"
+                    "n n"
+                    "f f";
 
 }
 
@@ -213,6 +220,15 @@ h2 {
     border-radius: 10px;
     width: 75px;
 
+}
+
+.trashButton {
+    grid-area: f;
+    background-color: #fcfdfd;
+    color: #0f172a;
+    padding: 2px;
+    border-radius: 10px;
+    border: 2px solid #0f172a;
 }
 
 .priorityColor {

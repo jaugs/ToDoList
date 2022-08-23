@@ -67,6 +67,17 @@ for (let key in options) {
     wrapper.appendChild(label);
 }
 
+let notesLabel = document.createElement('div');
+notesLabel.setAttribute('class', 'label')
+notesLabel.innerText = 'Notes:'
+ content.appendChild(notesLabel);
+ let notes = document.createElement('input');
+ notes.setAttribute('type', 'text')
+ notes.setAttribute('id', 'notes');
+ notes.setAttribute('class', 'item');
+ notesLabel.appendChild(notes);
+
+
 let submit = document.createElement('input');
 submit.setAttribute('type', 'submit')
 submit.setAttribute('id', 'submit');

@@ -5,18 +5,19 @@ import {createListItem} from './listItem.js';
 import './style.css';
 // import prancingPony2 from './prancingPony.png';
 import { createForm } from './form.js';
+import trashIcon from './trash.svg';
 export {addtoDo};
-
+//sdfgddgsdg
 //ADD DELETE ITEM BUTTON - Done
 //ADD MARK COMPLETE BUTTON - done
 //CSS
-//ADD PRIORITY/NOTES OTHER FIELDS
+//ADD PRIORITY/NOTES OTHER FIELDS - done
 //CHANGE VALUES ON  TO DOS- done
 //CLEAN UP/COMMENT
 //form validation
 //change heading
 //delete Projects
-
+//form styling
 
 let container = document.createElement('div');
 container.setAttribute('id', 'container');
@@ -32,6 +33,7 @@ class listItem {
      this.dueDate = dueDate;
      this.priority = priority;
      this.project = project;
+     this.notes;
     }
      getTitle() {
          return this.title;
@@ -119,7 +121,6 @@ heading.appendChild(welcome);
 let formSpace = document.createElement('div');
 formSpace.setAttribute('id', 'formSpace');
 container.appendChild(formSpace);
-
 let newProjectButton = document.createElement('button');
 newProjectButton.setAttribute('id', 'newProjectButton');
 newProjectButton.setAttribute('class', 'button');
@@ -311,24 +312,49 @@ function addCards() {
             editButton.setAttribute('class', 'cardButton');
             editButton.innerText = 'Modify';
             cardTitle.appendChild(editButton);
-
-            let deleteButton = document.createElement('button');
-            deleteButton.setAttribute('id', `delete_${arr.number}`);
-            deleteButton.setAttribute('class', 'cardButton');
-            deleteButton.innerText = 'Delete';
-            cardTitle.appendChild(deleteButton);
-
+            
             let expandButton = document.createElement('button');
             expandButton.setAttribute('id', `expand_${arr.number}`);
             expandButton.setAttribute('class', 'cardButton');
             expandButton.innerText = 'Expand';
             cardTitle.appendChild(expandButton);
 
-           cardBody.appendChild(newItem(arr.title));
-           cardBody.appendChild(newItem(arr.dueDate));
-           let details = document.createElement('div');
-            details.setAttribute('id', 'details');
-            details.innerText = arr.description;
+            let trashButton = new Image;
+            trashButton.src = trashIcon;
+            trashButton.setAttribute('id', `delete_${arr.number}`);
+            trashButton.setAttribute('class', 'trashButton');
+
+            let title = document.createElement('div');
+            title.setAttribute('class', 'field');
+            title.innerText = 'Title:';
+            let titleValue = document.createElement('div');
+            titleValue.setAttribute('class', 'value');
+            titleValue.innerText = arr.title;
+            let date = document.createElement('div');
+            date.setAttribute('class', 'field');
+            date.innerText = 'Due-Date:';
+            let dateValue = document.createElement('div');
+            dateValue.setAttribute('class', 'value');
+            dateValue.innerText = arr.dueDate;
+            cardBody.appendChild(title)
+            cardBody.appendChild(titleValue)
+            cardBody.appendChild(date)
+            cardBody.appendChild(dateValue)
+            cardBody.appendChild(trashButton);
+
+    
+           let description = document.createElement('div');
+           description.setAttribute('class', 'field');
+           description.innerText = 'Description:';
+           let descriptionValue = document.createElement('div');
+           descriptionValue.setAttribute('class', 'value');
+           descriptionValue.innerText = arr.description;
+           let notes = document.createElement('div');
+           notes.setAttribute('class', 'field');
+           notes.innerText = 'Notes:';
+           let noteValue = document.createElement('div');
+           noteValue.setAttribute('class', 'value');
+           noteValue.innerText = arr.notes;
 
             completeButton.onclick = () => {
                 card.setAttribute('class', 'complete');
@@ -346,7 +372,7 @@ function addCards() {
                 createForm();
             }
 
-            deleteButton.onclick = () => {
+            trashButton.onclick = () => {
                 let text = confirm("Are you sure you want to delete this To-Do?")
                 if (text == true) {
                     arr.project = "deleted";
@@ -357,13 +383,18 @@ function addCards() {
                 }}
 
            expandButton.onclick = () => {
-            //console.log(details);
-            cardBody.appendChild(details);
+            cardBody.appendChild(description)
+            cardBody.appendChild(descriptionValue)
+            cardBody.appendChild(notes)
+            cardBody.appendChild(noteValue)
             cardTitle.appendChild(collapseButton);
             cardTitle.removeChild(expandButton);
 
             collapseButton.onclick = () => {
-                cardBody.removeChild(details);
+                cardBody.removeChild(description);
+                cardBody.removeChild(descriptionValue);
+                cardBody.removeChild(notes);
+                cardBody.removeChild(noteValue);
                 cardTitle.removeChild(collapseButton);
                 cardTitle.appendChild(expandButton);
             };
@@ -388,6 +419,7 @@ function addCards() {
                 displayCard(projectArray[r]);
             }}}}
 
+
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
 function addtoDo() {
     let project = currentProject();
@@ -403,7 +435,8 @@ function addtoDo() {
                     break;
                 }
             }
-    let newItem = new listItem(counter, title, description, dueDate, selectedSize, projectName);
+    let notes = document.getElementById("notes").value;
+    let newItem = new listItem(counter, title, description, dueDate, selectedSize, projectName, notes);
     projectObj[projectName].push(newItem);
     removeForm();
     counter++;
@@ -439,9 +472,12 @@ function cardDrag(card) {
 //let currentProject = currentProject();
 card.onmousedown = function(event) {
     let buttons = document.querySelectorAll('.cardButton')
+    let trashButtons = document.querySelectorAll('.trashButton')
     let elementBelow = document.elementFromPoint(event.clientX, event.clientY);
     for (let i = 0; i < buttons.length; i++) {
     if (elementBelow == buttons[i]) {
+        return
+    }else if (elementBelow == trashButtons[i]) {
         return
     }}
 
@@ -540,13 +576,6 @@ card.ondragstart = function() {
 }
 
 
-function newItem(string) {
-    let item = document.createElement('div');
-    item.setAttribute('class', 'listItem');
-    item.innerText = string;
-    return item;
-    }
-    
 
 console.log(localStorage);
 
