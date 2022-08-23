@@ -70,6 +70,24 @@ function createProjectObject() {
     return projectObj
 }}
 
+function listItems() {
+    let allListItems = document.querySelectorAll('.list');
+    for (let k = 0; k < allListItems.length; k++) {
+        allListItems[k].remove()
+    }
+Object.entries(projectObj).forEach(([key, value]) =>  {
+    for (let i = 0; i < value.length; i++) {
+        let item = value[i];
+        let project = item.project;
+        let projectTitle = document.getElementById(project);
+        let listItem = document.createElement('div');
+        listItem.innerText = item.title;
+        listItem.setAttribute('class', 'list');
+        projectTitle.appendChild(listItem);
+    }})
+}
+
+
 function createCounter() {
     if (localStorage.length != 0) {
         let counter = JSON.parse( localStorage.getItem( `counter` ));
@@ -148,24 +166,11 @@ projectTitle.setAttribute('class', 'active');
 projectTitle.setAttribute('id', 'Default');
 container.appendChild(projecttitleBar);
 projecttitleBar.appendChild(projectTitle);
-let todoList = [];
 
-// Object.entries(projectObj).forEach(([key, value]) =>  {
-//     //console.log(value);
-//     //console.log(value[number]);
-//     for (let i = 0; i < value.length; i++) {
-//         if (value[i].project == 'Default') {
-//         let item = value[i];
-//         console.log(item);
-//         //item.project = newProjectName
-//         }
-//     }
-// })
-
-// projectTitle.appendChild(todoList);
 let cardSpace = document.createElement('div');
 cardSpace.setAttribute('id', 'display');
 container.appendChild(cardSpace);
+
 
 }
 
@@ -255,6 +260,7 @@ function hideProjectForm() {
 
 function addCards() {
     //console.log(projectObj);
+    listItems();
     let display = document.getElementById('display');
     let project = currentProject();
     let title = project.attributes['id'].value;
