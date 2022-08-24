@@ -1,24 +1,19 @@
-export {createListItem}
-
-
+/* eslint-disable no-use-before-define */
+/* eslint-disable max-len */
+// eslint-disable-next-line object-curly-spacing, import/prefer-default-export
+export { createListItem };
 
 function createListItem() {
-    
-    // let item = new listItem('title', 'this is', '11/2', 'high')
-    // console.log(item);
-    // return item
-
-    // let title = createTitle('The Prancing Pony')
-    // content.appendChild(title);
-    // title.appendChild(createHeading());
-
-    // let footer = createTitle('By JAUGS 2022');
-    // footer.setAttribute('id', 'footer');
-    // content.appendChild(footer);
-    }
-
-
-
+  // let item = new listItem('title', 'this is', '11/2', 'high')
+  // console.log(item);
+  // return item
+  // let title = createTitle('The Prancing Pony')
+  // content.appendChild(title);
+  // title.appendChild(createHeading());
+  // let footer = createTitle('By JAUGS 2022');
+  // footer.setAttribute('id', 'footer');
+  // content.appendChild(footer);
+}
 
 // function createHeading() {
 //         let title = "- by Barliman Butterbur";
@@ -38,6 +33,7 @@ function createListItem() {
 // }
 
 // function createText() {
+// eslint-disable-next-line max-len
 //     let infoText = "The Prancing Pony has been a Breeland staple for over 300 years. Come and stay in our most comfortable rooms (including Hobbit-Sized rooms) while enjoing the best food west of the Misty Mountains! - Barliman";
 //     let info1 = document.createElement('div');
 //     info1.setAttribute('id', 'text');
@@ -51,7 +47,7 @@ function createListItem() {
 //         list.setAttribute('id', 'hourList');
 //         list.setAttribute('class', 'card');
 //         let data = ["Breakfast: served at Sunrise daily", "Second-Breakfast: served two hours after Sunrise", "Luncheon: served at high noon", "Supper: served at Sunset", "Stables available upon request"]
-  
+
 //         data.forEach((item) => {
 //             let li = document.createElement("li");
 //             li.setAttribute('class', 'listItem')
@@ -69,4 +65,3 @@ function createListItem() {
 //     location.innerText = infoText;
 //     return location;
 // }
-
