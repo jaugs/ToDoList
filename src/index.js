@@ -376,12 +376,16 @@ function addCards() {
     noteValue.innerText = arr.notes;
 
     completeButton.onclick = () => {
-      card.setAttribute("class", "complete");
+      cardBody.setAttribute("class", "cardComplete");
+      arr.priority = "complete";
+      priorityColor.setAttribute("id", arr.priority);
       cardTitle.appendChild(uncompleteButton);
       cardTitle.removeChild(completeButton);
     
       uncompleteButton.onclick = () => {
-        card.setAttribute("class", "card");
+        cardBody.setAttribute("class", "cardBody");
+        arr.priority = "Medium";
+        priorityColor.setAttribute("id", arr.priority);
         cardTitle.appendChild(completeButton);
         cardTitle.removeChild(uncompleteButton);
       };
@@ -404,6 +408,7 @@ function addCards() {
     };
 
     expandButton.onclick = () => {
+      card.setAttribute('class', 'expandCard');
       cardBody.appendChild(description);
       cardBody.appendChild(descriptionValue);
       cardBody.appendChild(notes);
@@ -412,6 +417,7 @@ function addCards() {
       cardTitle.removeChild(expandButton);
 
       collapseButton.onclick = () => {
+        card.setAttribute('class', 'card');
         cardBody.removeChild(description);
         cardBody.removeChild(descriptionValue);
         cardBody.removeChild(notes);
