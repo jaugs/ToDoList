@@ -178,10 +178,15 @@ h2 {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   width: 300px;
   height: 250px;
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+
 }
 
 .expandCard {
   grid-column: 1 / -1;
+  display: grid;
+  grid-template-rows: 1fr 8fr;
   border: 2px solid black;
   background-color: #cbd5e1;
   border-radius: 15px;
@@ -196,40 +201,138 @@ h2 {
 
 .cardComplete {
     opacity: .4;
-    display: grid;
-  padding: 20px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas:
-    "t tv"
-    "d dv"
-    "s sv"
-    "n nv"
-    "b b";
-  font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: auto;
+    justify-items: center;
+    align-items: center;
+    width: 280px;
+    padding-top: 25px;
+    height: 159px;
+    font-size: 26px;
+    gap: 2px;
+
 }
 
 
 .cardBar {
   padding: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
+  grid-template-areas:
+    "p p"
+    "b e";
 }
+
+.priorityColor {
+  grid-area: p;
+  width: 292px;
+  height: 12px;
+  border-radius: 15px;
+  border: 2px solid #0f172a;
+}
+
+.cardButton {
+  grid-area: b;
+  justify-self: center;
+  background-color: #fcfdfd;
+  color: #0f172a;
+  border-radius: 10px;
+  /* width: 75px; */
+  width: 8rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 9px;
+  border-radius: 40px;
+  box-shadow: 0 2px #0f172a;
+}
+
+.cardButton:hover {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+.cardButton:active {
+  background-color: #1e293b;
+  color: #f8fafc;
+  transform: translateY(4px);
+}
+
+.expandButton {
+  grid-area: e;
+  justify-self: center;
+  background-color: #fcfdfd;
+  color: #0f172a;
+  border-radius: 10px;
+  width: 8rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 40px;
+  padding: 9px;
+  box-shadow: 0 2px #0f172a;
+}
+
+.expandButton:hover {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+.expandButton:active {
+  background-color: #1e293b;
+  color: #f8fafc;
+  transform: translateY(4px);
+}
+
 
 .cardBody {
   display: flex;
-  float: inline-end;
   flex-direction: column;
-  max-width: 300px;
-  padding: 10px;
-  /* grid-template-columns: repeat(auto-fit);
-  grid-auto-flow: column; */
-  /* grid-template-columns: 1fr; */
-  /* grid-template-rows: 1fr 1fr 1fr; 
-  grid-template-areas:
-    "tv"
-    "dv"
-    "b"; */
-  font-size: 22px;
-  gap: 5px;
+  flex-wrap: wrap;
+  flex: auto;
+  justify-items: center;
+  align-items: center;
+  width: 280px;
+  padding-top: 25px;
+  height: 159px;
+  font-size: 26px;
+  gap: 2px;
+}
+
+.titleValue {
+ flex-grow: 2;
+ align-self: center;
+ flex-wrap: wrap;
+}
+
+.dateValue {
+  flex-grow: 2;
+}
+
+.trashButton {
+  display: flex;
+  align-self: flex-end;
+  justify-self: flex-end;
+  background-color: #fcfdfd;
+  color: #0f172a;
+  padding: 5px;
+  border: 2px solid #0f172a;
+  border-radius: 40px;
+  box-shadow: 0 2px #0f172a;
+}
+
+.trashButton:hover {
+  background-color: #cbd5e1;
+  color: #f8fafc;
+}
+
+.trashButton:active {
+  background-color: #475569;
+  color: #f8fafc;
+  transform: translateY(4px);
 }
 
 .expandBody {
@@ -245,23 +348,20 @@ h2 {
   gap: 5px;
 }
 
-.cardButton {
-  background-color: #fcfdfd;
-  color: #0f172a;
-  border-radius: 10px;
-  width: 75px;
-  opacity: 1;
-}
-
 .titleField {
   grid-area: t;
   align-self: center;
   justify-self: center;
+  padding: 5px;
+  border-bottom: 1px solid #0f172a;
+
 }
-.titleValue {
+.expandTitle {
   grid-area: tv;
   align-self: center;
   justify-self: flex-start;
+  padding: 5px;
+  border-bottom: 1px solid #0f172a;
 }
 
 .dateField {
@@ -269,7 +369,7 @@ h2 {
   align-self: center;
   justify-self: center;
 }
-.dateValue {
+.expandDate {
   grid-area: dv;
   align-self: center;
   justify-self: flex-start;
@@ -297,9 +397,7 @@ h2 {
   justify-self: flex-start;
 }
 
-.trashButton {
-  margin: auto;
-  margin-bottom: 10px;
+.trashExpand {
   grid-area: b;
   display: flex;
   align-self: flex-end;
@@ -307,16 +405,22 @@ h2 {
   background-color: #fcfdfd;
   color: #0f172a;
   padding: 5px;
-  border-radius: 10px;
+  border-radius: 40px;
+  box-shadow: 0 2px #0f172a;
   border: 2px solid #0f172a;
 }
 
-.priorityColor {
-  width: 300px;
-  height: 15px;
-  border-radius: 15px;
-  border: 2px solid #0f172a;
+.trashExpand:hover {
+  background-color: #cbd5e1;
+  color: #f8fafc;
 }
+
+.trashExpand:active {
+  background-color: #475569;
+  color: #f8fafc;
+  transform: translateY(4px);
+}
+
 
 #Urgent {
   background-color: red;

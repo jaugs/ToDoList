@@ -16,9 +16,9 @@
 /* eslint-disable import/prefer-default-export */
 
 import "./style.css";
+import { format, parseISO } from 'date-fns';
 import { createForm } from "./form.js";
 import trashIcon from "./trash.svg";
-import { format, parseISO } from 'date-fns';
 
 export { addtoDo };
 // sdfgddgsdg
@@ -314,7 +314,12 @@ function addCards() {
     card.appendChild(cardBody);
     const priorityColor = document.createElement("div");
     priorityColor.setAttribute("class", "priorityColor");
-    priorityColor.setAttribute("id", arr.priority);
+    if (arr.complete == true) {
+      cardBody.setAttribute("class", "cardComplete");
+      priorityColor.setAttribute("id", "complete");
+    } else {
+      priorityColor.setAttribute("id", arr.priority);
+    }
     cardTitle.appendChild(priorityColor);
 
     const completeButton = document.createElement("button");
@@ -322,22 +327,26 @@ function addCards() {
     completeButton.setAttribute("class", "cardButton");
     completeButton.innerText = "Complete";
     cardTitle.appendChild(completeButton);
-
+ 
     const uncompleteButton = document.createElement("button");
     uncompleteButton.setAttribute("id", `uncomplete_${arr.number}`);
     uncompleteButton.setAttribute("class", "cardButton");
-    uncompleteButton.innerText = "Not Finished";
-   
+    uncompleteButton.innerText = "Edit";
+    if (arr.complete == true) {
+      cardTitle.appendChild(uncompleteButton);
+      cardTitle.removeChild(completeButton);
+    }
+
 
     const editButton = document.createElement("button");
     editButton.setAttribute("id", `edit_${arr.number}`);
     editButton.setAttribute("class", "cardButton");
     editButton.innerText = "Modify";
-    cardTitle.appendChild(editButton);
+    // cardTitle.appendChild(editButton);
 
     const expandButton = document.createElement("button");
     expandButton.setAttribute("id", `expand_${arr.number}`);
-    expandButton.setAttribute("class", "cardButton");
+    expandButton.setAttribute("class", "expandButton");
     expandButton.innerText = "Expand";
     cardTitle.appendChild(expandButton);
 
@@ -383,7 +392,7 @@ function addCards() {
       priorityColor.setAttribute("id", "complete");
       cardTitle.appendChild(uncompleteButton);
       cardTitle.removeChild(completeButton);
-    
+    };
       uncompleteButton.onclick = () => {
         cardBody.setAttribute("class", "cardBody");
         arr.complete = "false";
@@ -391,7 +400,7 @@ function addCards() {
         cardTitle.appendChild(completeButton);
         cardTitle.removeChild(uncompleteButton);
       };
-    };
+
 
     editButton.onclick = () => {
       arr.project = "deleted";
@@ -413,6 +422,12 @@ function addCards() {
       card.setAttribute('class', 'expandCard');
       cardTitle.setAttribute('class', 'expandBar');
       cardBody.setAttribute('class', 'expandBody');
+      cardBody.appendChild(title);
+      titleValue.setAttribute('class', 'expandTitle');
+      cardBody.appendChild(date);
+      dateValue.setAttribute('class', 'expandDate');
+      trashButton.setAttribute('class', 'trashExpand');
+      cardTitle.appendChild(editButton);
       cardBody.appendChild(description);
       cardBody.appendChild(descriptionValue);
       cardBody.appendChild(notes);
@@ -424,37 +439,38 @@ function addCards() {
         card.setAttribute('class', 'card');
         cardTitle.setAttribute('class', 'cardBar');
         cardBody.setAttribute('class', 'cardBody');
+        trashButton.setAttribute('class', 'trashButton');
+        titleValue.setAttribute('class', 'titleValue');
+        dateValue.setAttribute('class', 'dateValue');
+        cardBody.removeChild(title);
+        cardBody.removeChild(date);
         cardBody.removeChild(description);
         cardBody.removeChild(descriptionValue);
         cardBody.removeChild(notes);
         cardBody.removeChild(noteValue);
+        cardTitle.removeChild(editButton);
         cardTitle.removeChild(collapseButton);
         cardTitle.appendChild(expandButton);
       };
     };
+
     let collapseButton = document.createElement("button");
     collapseButton.setAttribute("id", `collapse_${arr.number}`);
-    collapseButton.setAttribute("class", "cardButton");
+    collapseButton.setAttribute("class", "expandButton");
     collapseButton.innerText = "Hide";
     cardDrag(card);
   }
 
+// runs displayCard function for ToDO items in the inactive array that have moved to the new project
   const allInactive = document.querySelectorAll(".inactive");
-  // console.log(allInactive);
   for (let k = 0; k < allInactive.length; k++) {
-    // console.log(allInactive[k]);
     const projectTitle = allInactive[k].attributes.id.value;
     const projectArray = projectObj[projectTitle];
-    // console.log(project);
     for (let r = 0; r < projectArray.length; r++) {
       if (projectArray[r].project == project.attributes.id.value) {
-        // console.log(projectArray[r]);
         displayCard(projectArray[r]);
-      }
-    }
-  }
+      }}}
 }
-// const format = require('date-fns/format');
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
 function addtoDo() {
@@ -517,9 +533,12 @@ function cardDrag(card) {
   // let card = document.querySelector('.card');
   // let cardID = document.querySelector('.card')
   // let currentProject = currentProject();
+  console.log(card);
   card.onmousedown = function (event) {
     const buttons = document.querySelectorAll(".cardButton");
     const trashButtons = document.querySelectorAll(".trashButton");
+    const expandCards = document.querySelectorAll(".expandCard");
+    const expandButtons = document.querySelectorAll(".expandButton");
     const elementBelow = document.elementFromPoint(
       event.clientX,
       event.clientY
@@ -529,6 +548,12 @@ function cardDrag(card) {
         return;
       }
       if (elementBelow == trashButtons[i]) {
+        return;
+      }
+      if (elementBelow == expandCards[i]) {
+        return;
+      }
+      if (elementBelow == expandButtons[i]) {
         return;
       }
     }
@@ -621,6 +646,8 @@ function cardDrag(card) {
 console.log(localStorage);
 
 function clearOut() {
+  const deleteText = confirm("Are you sure you want to delete all stored Projects and Items?");
+  if (deleteText == true) {
   localStorage.clear();
   console.log(localStorage);
-}
+}}
