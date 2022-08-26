@@ -39,7 +39,7 @@ document.body.appendChild(container);
 const toDoArr = [];
 
 class listItem {
-  constructor(number, title, description, dueDate, priority, project, notes) {
+  constructor(number, title, description, dueDate, priority, project, notes, complete) {
     this.number = number;
     this.title = title;
     this.description = description;
@@ -47,6 +47,7 @@ class listItem {
     this.priority = priority;
     this.project = project;
     this.notes = notes;
+    this.complete = complete;
   }
 
   getTitle() {
@@ -356,9 +357,9 @@ function addCards() {
     const dateValue = document.createElement("div");
     dateValue.setAttribute("class", "dateValue");
     dateValue.innerText = arr.dueDate;
-    cardBody.appendChild(title);
+    // cardBody.appendChild(title);
     cardBody.appendChild(titleValue);
-    cardBody.appendChild(date);
+    // cardBody.appendChild(date);
     cardBody.appendChild(dateValue);
     cardBody.appendChild(trashButton);
 
@@ -377,14 +378,14 @@ function addCards() {
 
     completeButton.onclick = () => {
       cardBody.setAttribute("class", "cardComplete");
-      arr.priority = "complete";
-      priorityColor.setAttribute("id", arr.priority);
+      arr.complete = true;
+      priorityColor.setAttribute("id", "complete");
       cardTitle.appendChild(uncompleteButton);
       cardTitle.removeChild(completeButton);
     
       uncompleteButton.onclick = () => {
         cardBody.setAttribute("class", "cardBody");
-        arr.priority = "Medium";
+        arr.complete = "false";
         priorityColor.setAttribute("id", arr.priority);
         cardTitle.appendChild(completeButton);
         cardTitle.removeChild(uncompleteButton);
@@ -409,6 +410,8 @@ function addCards() {
 
     expandButton.onclick = () => {
       card.setAttribute('class', 'expandCard');
+      cardTitle.setAttribute('class', 'expandBar');
+      cardBody.setAttribute('class', 'expandBody');
       cardBody.appendChild(description);
       cardBody.appendChild(descriptionValue);
       cardBody.appendChild(notes);
@@ -418,6 +421,8 @@ function addCards() {
 
       collapseButton.onclick = () => {
         card.setAttribute('class', 'card');
+        cardTitle.setAttribute('class', 'cardBar');
+        cardBody.setAttribute('class', 'cardBody');
         cardBody.removeChild(description);
         cardBody.removeChild(descriptionValue);
         cardBody.removeChild(notes);
@@ -465,6 +470,7 @@ function addtoDo() {
     }
   }
   const notes = document.getElementById("notes").value;
+  const complete = false;
   const newItem = new listItem(
     counter,
     title,
@@ -472,7 +478,8 @@ function addtoDo() {
     dueDate,
     selectedSize,
     projectName,
-    notes
+    notes,
+    complete,
   );
   projectObj[projectName].push(newItem);
   removeForm();
