@@ -18,6 +18,7 @@
 import "./style.css";
 import { createForm } from "./form.js";
 import trashIcon from "./trash.svg";
+import { format, parseISO } from 'date-fns';
 
 export { addtoDo };
 // sdfgddgsdg
@@ -453,14 +454,17 @@ function addCards() {
     }
   }
 }
+// const format = require('date-fns/format');
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
 function addtoDo() {
+
   const project = currentProject();
   const projectName = project.attributes.id.value;
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
   const dueDate = document.getElementById("dueDate").value;
+  const formatteddueDate = format(parseISO(dueDate), 'MM/dd/yy');
   const radioButtons = document.querySelectorAll('input[name="priority"]');
   let selectedSize;
   for (const radioButton of radioButtons) {
@@ -475,7 +479,7 @@ function addtoDo() {
     counter,
     title,
     description,
-    dueDate,
+    formatteddueDate,
     selectedSize,
     projectName,
     notes,

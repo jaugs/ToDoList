@@ -28,6 +28,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "date-fns": "^2.29.2",
     "eslint-config-prettier": "^8.5.0",
     "save-dev": "^0.0.1-security"
   }
