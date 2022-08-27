@@ -9,9 +9,18 @@ body {
   margin: 0;
   padding: 0px;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  width: 100%;
 }
 
 #container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  min-height: 100%; 
   display: grid;
   grid-template-columns: 1fr 6fr 6fr;
   grid-template-rows: 0.5fr 2fr 3fr;
@@ -180,6 +189,7 @@ h2 {
   height: 250px;
   display: grid;
   grid-template-rows: 1fr 4fr;
+  pointer-events: visible;
 
 }
 
@@ -349,11 +359,15 @@ h2 {
 }
 
 .titleField {
+  display:flex;
+  justify-content: center;
+  width: 18rem;
   grid-area: t;
   align-self: center;
   justify-self: center;
   padding: 5px;
   border-bottom: 1px solid #0f172a;
+  
 
 }
 .expandTitle {
@@ -366,6 +380,10 @@ h2 {
 
 .dateField {
   grid-area: d;
+  display:flex;
+  justify-content: center;
+  border-bottom: 1px solid #0f172a;
+  width: 18rem;
   align-self: center;
   justify-self: center;
 }
@@ -377,8 +395,12 @@ h2 {
 
 .descriptionField {
   grid-area: s;
+  display:flex;
+  justify-content: center;
+  width: 18rem;
   align-self: center;
   justify-self: center;
+  border-bottom: 1px solid #0f172a;
 }
 .descriptionValue {
   grid-area: sv;
@@ -388,6 +410,10 @@ h2 {
 
 .notesField {
   grid-area: n;
+  display:flex;
+  justify-content: center;
+  border-bottom: 1px solid #0f172a;
+  width: 18rem;
   align-self: center;
   justify-self: center;
 }

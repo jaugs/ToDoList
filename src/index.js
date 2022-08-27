@@ -457,7 +457,8 @@ function addCards() {
     let collapseButton = document.createElement("button");
     collapseButton.setAttribute("id", `collapse_${arr.number}`);
     collapseButton.setAttribute("class", "expandButton");
-    collapseButton.innerText = "Hide";
+    collapseButton.innerText = "Collapse";
+   
     cardDrag(card);
   }
 
@@ -531,10 +532,15 @@ function removeForm() {
 
 function cardDrag(card) {
   // let card = document.querySelector('.card');
-  // let cardID = document.querySelector('.card')
+//  let container = document.getElementById('container');
   // let currentProject = currentProject();
-  console.log(card);
+ // stops card from dragging when expanded
   card.onmousedown = function (event) {
+    const attribute = card.getAttribute('class');
+    console.log(attribute);
+    if (attribute == 'expandCard') {
+     return
+   }
     const buttons = document.querySelectorAll(".cardButton");
     const trashButtons = document.querySelectorAll(".trashButton");
     const expandCards = document.querySelectorAll(".expandCard");
@@ -577,10 +583,13 @@ function cardDrag(card) {
 
     function onMouseMove(event) {
       moveCard(event.pageX, event.pageY);
-
-      card.hidden = true;
-      const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-      card.hidden = false;
+      card.style.display = 'none';
+      // card.hidden = true;
+   //   console.log(card.hidden);
+      // eslint-disable-next-line prefer-const
+      let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+       console.log(elemBelow);
+       card.style.display = 'grid';
       if (!elemBelow) return;
       const droppableBelow = elemBelow.closest(".inactive");
       if (currentDroppable != droppableBelow) {
@@ -590,6 +599,7 @@ function cardDrag(card) {
         currentDroppable = droppableBelow;
         if (currentDroppable) {
           card.onmouseup = function () {
+            console.log(currentDroppable);
             document.removeEventListener("mousemove", onMouseMove);
             // currentDroppable.style.background = '#f3f5f9';
             const newProjectName = currentDroppable.attributes.id.value;
@@ -617,9 +627,9 @@ function cardDrag(card) {
         }
       }
     }
-
     document.addEventListener("mousemove", onMouseMove);
 
+   
     card.onmouseup = function () {
       document.removeEventListener("mousemove", onMouseMove);
       card.remove();
@@ -632,8 +642,8 @@ function cardDrag(card) {
   //     elem.style.background = 'pink';
   //     }
 
-  function leaveDroppable(elem) {
-    console.log(elem);
+  function leaveDroppable() {
+   
     // document.removeEventListener('mousemove', onMouseMove);
     // elem.style.background = 'blue';
   }
