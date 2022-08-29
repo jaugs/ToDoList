@@ -204,7 +204,6 @@ const projectObj = createProjectObject();
 addCards();
 
 function createNewProject() {
-  const formSpace = document.getElementById("formSpace");
   const newProjectButton = document.getElementById("newProjectButton");
   newProjectButton.removeEventListener("click", createNewProject);
   newProjectButton.innerText = "Hide";
@@ -228,7 +227,7 @@ function createNewProject() {
   submit.setAttribute("id", "projectSubmit");
   submit.setAttribute("class", "button");
   newProjectForm.appendChild(submit);
-  formSpace.appendChild(newProjectForm);
+  document.body.appendChild(newProjectForm);
   submit.addEventListener("click", addnewProject);
 }
 
@@ -588,7 +587,6 @@ function cardDrag(card) {
    //   console.log(card.hidden);
       // eslint-disable-next-line prefer-const
       let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-       console.log(elemBelow);
        card.style.display = 'grid';
       if (!elemBelow) return;
       const droppableBelow = elemBelow.closest(".inactive");
