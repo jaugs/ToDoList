@@ -19,18 +19,21 @@ function createForm() {
   const titleLabel = document.createElement("div");
   titleLabel.setAttribute("class", "label");
   titleLabel.setAttribute("id", "titleLabel");
-  titleLabel.innerText = "Item Title";
+  titleLabel.innerText = "Item Title: (*)";
   content.appendChild(titleLabel);
   const title = document.createElement("input");
   title.setAttribute("type", "text");
   title.setAttribute("id", "title");
   title.setAttribute("class", "item");
+  title.name = "todo_title"
+  title.minLength =  3
+  title.required = true;
   titleLabel.appendChild(title);
 
   const descriptionLabel = document.createElement("div");
   descriptionLabel.setAttribute("class", "label");
   descriptionLabel.setAttribute("id", "descriptionLabel");
-  descriptionLabel.innerText = "Item Description";
+  descriptionLabel.innerText = "Item Description:";
   content.appendChild(descriptionLabel);
   const description = document.createElement("textarea");
   description.maxlength = 1000;
@@ -44,7 +47,7 @@ function createForm() {
   const dueLabel = document.createElement("div");
   dueLabel.setAttribute("class", "label");
   dueLabel.setAttribute("id", "dateLabel");
-  dueLabel.innerText = "Due Date";
+  dueLabel.innerText = "Due Date: (*)";
   content.appendChild(dueLabel);
   const dueDate = document.createElement("input");
   dueDate.setAttribute("type", "date");
@@ -55,7 +58,7 @@ function createForm() {
   const wrapper = document.createElement("div");
   wrapper.setAttribute("id", "priorityLabel");
   wrapper.setAttribute("class", "label");
-  wrapper.innerText = "Set Priority for Item";
+  wrapper.innerText = "Set Priority for Item:";
   content.appendChild(wrapper);
 
   const options = {
@@ -73,6 +76,7 @@ function createForm() {
     input.type = "radio";
     input.name = "priority";
     input.value = key;
+    input.checked = true;
     label.appendChild(input);
     wrapper.appendChild(label);
   }
@@ -98,13 +102,22 @@ function createForm() {
   content.appendChild(undo);
   undo.addEventListener("click", hideForm);
   
-  const submit = document.createElement("input");
-  submit.setAttribute("type", "submit");
+  const submit = document.createElement("button");
   submit.setAttribute("id", "submitLabel");
+  submit.innerText = "Submit"
   submit.setAttribute("class", "button");
   content.appendChild(submit);
-  submit.addEventListener("click", addtoDo);
-}
+  submit.onclick = () => {
+    if ((title.value === '') && (dueDate.value === '')) {
+      title.style.border = "6px solid red";
+      dueDate.style.border = "6px solid red";
+    } else if (title.value === '') {
+      title.style.border = "6px solid red";
+    } else if (dueDate.value === '') {
+      dueDate.style.border = "6px solid red";
+    } else {
+    addtoDo();
+}}}
 
 function hideForm() {
   const content = document.getElementById("content");

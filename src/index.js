@@ -28,10 +28,10 @@ export { addtoDo };
 // ADD PRIORITY/NOTES OTHER FIELDS - done
 // CHANGE VALUES ON  TO DOS- done
 // CLEAN UP/COMMENT
-// form validation
+// form validation - DONE
 // change heading
 // delete Projects
-// form styling
+// form styling - DOne
 
 const container = document.createElement("div");
 container.setAttribute("id", "container");
@@ -228,8 +228,11 @@ function createNewProject() {
   submit.setAttribute("class", "button");
   newProjectForm.appendChild(submit);
   document.body.appendChild(newProjectForm);
-  submit.addEventListener("click", addnewProject);
-}
+  submit.onclick = () => {
+    if (title.value === '') {
+      title.style.border = "6px solid red";
+    } else {addnewProject()}
+}}
 
 function currentProject() {
   const current = document.querySelector(".active");
