@@ -19,6 +19,7 @@ import "./style.css";
 import { format, parseISO } from 'date-fns';
 import { createForm } from "./form.js";
 import trashIcon from "./trash.svg";
+import editIcon from "./edit.svg";
 
 export { addtoDo };
 // sdfgddgsdg
@@ -26,11 +27,11 @@ export { addtoDo };
 // ADD MARK COMPLETE BUTTON - done
 // CSS
 // ADD PRIORITY/NOTES OTHER FIELDS - done
-// CHANGE VALUES ON  TO DOS- done
 // CLEAN UP/COMMENT
 // form validation - DONE
 // change heading
 // delete Projects
+// edit button rework
 // form styling - DOne
 
 const container = document.createElement("div");
@@ -100,7 +101,11 @@ function listItems() {
   for (let k = 0; k < allListItems.length; k++) {
     allListItems[k].remove();
   }
-  Object.entries(projectObj).forEach(([, value]) => {
+  Object.entries(projectObj).forEach(([key, value]) => {
+    const projectCard = document.getElementById(key);
+    if (projectCard.querySelector('.iconBar') == null) {
+    createIconBar(projectCard);
+    }
     for (let i = 0; i < value.length; i++) {
       const item = value[i];
       const { project } = item;
@@ -175,27 +180,37 @@ function createHeading() {
 createHeading();
 
 function createDefaultProject() {
-  const header = document.getElementById("header");
-  const defaultProject = document.createElement("div");
-  defaultProject.setAttribute("id", "projectSpace");
-  defaultProject.setAttribute("class", "project");
-  header.appendChild(defaultProject);
-
+  const formspace = document.getElementById("formSpace");
   const projecttitleBar = document.createElement("div");
   projecttitleBar.setAttribute("id", "projecttitleBar");
   const projects = document.createElement("div");
   projects.innerText = "Projects";
   projects.setAttribute("class", "projectField");
   projecttitleBar.appendChild(projects);
-  const projectTitle = document.createElement("div");
+  const projectCard = document.createElement("div");
+  const projectTitle= document.createElement("div");
   projectTitle.innerText = "Default Project";
-  projectTitle.setAttribute("class", "active");
-  projectTitle.setAttribute("id", "Default");
-  container.appendChild(projecttitleBar);
-  projecttitleBar.appendChild(projectTitle);
+  projectTitle.setAttribute("class", "projectTitle");
+  projectCard.appendChild(projectTitle);
+  projectCard.setAttribute("class", "active");
+  projectCard.setAttribute("id", "Default");
+  formspace.appendChild(projecttitleBar);
+  projecttitleBar.appendChild(projectCard);
   const cardSpace = document.createElement("div");
   cardSpace.setAttribute("id", "display");
   container.appendChild(cardSpace);
+}
+
+function createIconBar(elem) {
+  const projectTitle = elem.firstChild;
+  const iconBar= document.createElement("div");
+  iconBar.setAttribute("class", "iconBar");
+  elem.appendChild(iconBar);
+  const nameButton = createRenameIcon();
+  const deleteButton = createDeleteIcon();
+  iconBar.appendChild(nameButton);
+  iconBar.appendChild(deleteButton);
+  nameButton.onclick = () => renameProject(projectTitle);
 }
 
 createDefaultProject();
@@ -234,6 +249,51 @@ function createNewProject() {
     } else {addnewProject()}
 }}
 
+function renameProject(elem) {
+  const renameForm = document.createElement("div");
+  renameForm.setAttribute("id", "renameForm");
+  renameForm.setAttribute("class", "form");
+  const nameLabel = document.createElement("div");
+  nameLabel.setAttribute("class", "label");
+  nameLabel.innerText = "New Project Title";
+  renameForm.appendChild(nameLabel);
+  const name = document.createElement("input");
+  name.setAttribute("type", "text");
+  name.setAttribute("id", "name");
+  name.setAttribute("class", "item");
+  nameLabel.appendChild(name);
+  const submit = document.createElement("input");
+  submit.setAttribute("type", "submit");
+  submit.setAttribute("id", "nameSubmit");
+  submit.setAttribute("class", "button");
+  renameForm.appendChild(submit);
+  document.body.appendChild(renameForm);
+  submit.onclick = () => {
+    if (name.value === '') {
+      name.style.border = "6px solid red";
+    } else {
+      elem.innerText = name.value;
+      renameForm.remove();
+    }
+}}
+
+
+function createDeleteIcon() {
+  const trashButton = new Image();
+  trashButton.src = trashIcon;
+  trashButton.title = "Delete Project";
+  trashButton.setAttribute("class", "projectButton");
+  return trashButton
+}
+
+function createRenameIcon() {
+  const editButton = new Image();
+  editButton.src = editIcon;
+  editButton.title = "Rename Project";
+  editButton.setAttribute("class", "projectButton");
+  return editButton
+}
+
 function currentProject() {
   const current = document.querySelector(".active");
   return current;
@@ -251,28 +311,28 @@ function switchProject(elem) {
 function addnewProject() {
   const titleBar = document.getElementById("projecttitleBar");
   const defaultProject = currentProject();
-  // console.log(defaultProject);
-  const newProject = document.createElement("div");
-  newProject.setAttribute("class", "active");
+  const newProjectCard = document.createElement("div");
+  newProjectCard.setAttribute("class", "active");
   defaultProject.removeAttribute("class", "active");
   defaultProject.setAttribute("class", "inactive");
   const newProjectTitle = document.getElementById("projectTitle").value;
   const newArr = [];
   projectObj[newProjectTitle] = newArr;
-  // console.log(projectObj);
-  newProject.setAttribute("id", newProjectTitle);
-  newProject.innerText = newProjectTitle;
-  titleBar.appendChild(newProject);
+  newProjectCard.setAttribute("id", newProjectTitle);
+  const projectTitle = document.createElement("div");
+  projectTitle.setAttribute("class", "projectTitle");
+  projectTitle.innerText = newProjectTitle;
+  titleBar.appendChild(newProjectCard);
+  newProjectCard.appendChild(projectTitle);
   defaultProject.addEventListener("click", () => {
     switchProject(defaultProject);
   });
-  newProject.addEventListener("click", () => {
-    switchProject(newProject);
+  newProjectCard.addEventListener("click", () => {
+    switchProject(newProjectCard);
   });
-  // newProject.addEventListener('click', currentProject(newProjectTitle));
-  // newProject.onclick = currentProject();
-  hideProjectForm();
-  // return newprojectObj;
+
+  createIconBar(newProjectCard);
+   hideProjectForm();
 }
 
 function hideProjectForm() {
@@ -292,9 +352,15 @@ function addCards() {
   const title = project.attributes.id.value;
   const currentProjectArray = projectObj[title];
   const allCards = document.querySelectorAll(".card");
+  const allExpandCards = document.querySelectorAll(".expandCard");
   if (allCards.length != 0) {
     for (let i = 0; i < allCards.length; i++) {
       allCards[i].remove();
+    }
+  }
+  if (allExpandCards.length != 0) {
+    for (let i = 0; i < allExpandCards.length; i++) {
+      allExpandCards[i].remove();
     }
   }
   for (let i = 0; i < currentProjectArray.length; i++) {
@@ -354,6 +420,7 @@ function addCards() {
 
     const trashButton = new Image();
     trashButton.src = trashIcon;
+    trashButton.title = "Delete Item";
     trashButton.setAttribute("id", `delete_${arr.number}`);
     trashButton.setAttribute("class", "trashButton");
 

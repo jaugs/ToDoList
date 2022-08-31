@@ -27,7 +27,7 @@ body {
   grid-template-areas:
     "h h h"
     "s c c"
-    "t c c";
+    "s c c";
 }
 
 #formSpace {
@@ -60,15 +60,8 @@ h2 {
   font-size: 1.8em;
 }
 
-.dragger {
-  width: 250px;
-  height: 30px;
-  background-color: #0f172a;
-}
-
 .button {
   width: 14rem;
-  /* height: 75px; */
   cursor: pointer;
   background-color: #94a3b8;
   color: #0f172a;
@@ -91,12 +84,12 @@ h2 {
 }
 
 #projecttitleBar {
-  grid-area: t;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0.5rem;
-  gap: 3rem;
+  padding-top: 3rem;
+  gap: 4rem;
   align-items: center;
   background-color: #e2e8f0;
   color: #1e293b;
@@ -127,7 +120,6 @@ h2 {
   box-shadow: rgba(0, 0, 0) 1px 3px 10px;
   border-radius: 7px;
   text-align: center;
-  margin: auto;
   border: 4px solid #475569;
 }
 
@@ -145,7 +137,7 @@ h2 {
   box-shadow: rgba(0, 0, 0, 0.33) -2px 2px 5px;
   border-radius: 7px;
   text-align: center;
-  margin: auto;
+  margin-top: .5rem;
 }
 
 .list {
@@ -173,7 +165,7 @@ h2 {
   grid-template-columns: repeat(auto-fit, 20rem);
   background-color: #f8fafc;
   color: #0f172a;
-  padding: 10px;
+  padding: 30px;
   gap: 20px;
 }
 .card {
