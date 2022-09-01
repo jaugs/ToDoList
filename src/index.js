@@ -25,14 +25,16 @@ export { addtoDo };
 // sdfgddgsdg
 // ADD DELETE ITEM BUTTON - Done
 // ADD MARK COMPLETE BUTTON - done
-// CSS
 // ADD PRIORITY/NOTES OTHER FIELDS - done
-// CLEAN UP/COMMENT
 // form validation - DONE
+// CSS
+
+// CLEAN UP/COMMENT
+
 // change heading
 // delete Projects
 // edit button rework
-// form styling - DOne
+// expand form styling
 
 const container = document.createElement("div");
 container.setAttribute("id", "container");
@@ -69,20 +71,26 @@ function createProjectObject() {
 
     for (const key of Object.entries(projectObj)) {
       if (key[0] != "Default") {
+        const projectCard = document.createElement("div");
         const projectTitle = document.createElement("div");
+        projectTitle.setAttribute("class", "projectTitle");
         const titleBar = document.getElementById("projecttitleBar");
-        projectTitle.setAttribute("id", key[0]);
-        projectTitle.setAttribute("class", "inactive");
+        projectCard.setAttribute("id", key[0]);
+        projectCard.setAttribute("class", "inactive");
         projectTitle.innerText = key[0];
-        titleBar.appendChild(projectTitle);
+        titleBar.appendChild(projectCard);
+        projectCard.appendChild(projectTitle)
         console.log(key[0]);
-        projectTitle.addEventListener("click", () => {
-          switchProject(projectTitle);
-        });
+
+        projectCard.onclick = () => switchProject(projectCard);
+        // projectCard.addEventListener("click", () => {
+        //   switchProject(projectCard);
+        // });
         const defaultProject = document.getElementById("Default");
-        defaultProject.addEventListener("click", () => {
-          switchProject(defaultProject);
-        });
+        defaultProject.onclick = () => switchProject(defaultProject);
+        // defaultProject.addEventListener("click", () => {
+        //   switchProject(defaultProject);
+        // });
       }
     }
     // if (projectObj.length)
@@ -103,9 +111,12 @@ function listItems() {
   }
   Object.entries(projectObj).forEach(([key, value]) => {
     const projectCard = document.getElementById(key);
+    if (projectCard !== null) {
+    // const className = projectCard.getAttribute('class');
+    // if (className !== "deleted") {
     if (projectCard.querySelector('.iconBar') == null) {
     createIconBar(projectCard);
-    }
+    }}
     for (let i = 0; i < value.length; i++) {
       const item = value[i];
       const { project } = item;
@@ -211,6 +222,7 @@ function createIconBar(elem) {
   iconBar.appendChild(nameButton);
   iconBar.appendChild(deleteButton);
   nameButton.onclick = () => renameProject(projectTitle);
+  deleteButton.onclick = () => deleteProject(elem);
 }
 
 createDefaultProject();
@@ -277,6 +289,27 @@ function renameProject(elem) {
     }
 }}
 
+function deleteProject(project) {
+  const text = confirm("Are you sure you want to delete this Project? All attached To-Do Items will be deleted.");
+      if (text == true) {
+        // arr.project = "deleted";
+        // console.log(arr.project);
+       
+  const projectTitleBar = document.getElementById("projecttitleBar");
+  project.setAttribute("class", "deleted")
+  projectTitleBar.removeChild(project);
+  const inactiveProject = document.querySelector('.inactive');
+  console.log(inactiveProject);
+  if (inactiveProject !== null) {
+  inactiveProject.setAttribute('class', 'active');
+  addCards();
+  } else if (inactiveProject == null) {
+    createNewProject()
+  }
+  
+      }
+
+}
 
 function createDeleteIcon() {
   const trashButton = new Image();
@@ -296,10 +329,17 @@ function createRenameIcon() {
 
 function currentProject() {
   const current = document.querySelector(".active");
-  return current;
+  // if (current  == null) {
+  //  return createNewProject();
+  // }
+   return current;
 }
 
 function switchProject(elem) {
+  const className = elem.getAttribute('class');
+  if (className == "deleted") {
+    return
+  }
   const project = document.querySelector(".active");
   project.removeAttribute("class", "active");
   project.setAttribute("class", "inactive");
@@ -310,11 +350,16 @@ function switchProject(elem) {
 
 function addnewProject() {
   const titleBar = document.getElementById("projecttitleBar");
-  const defaultProject = currentProject();
-  const newProjectCard = document.createElement("div");
-  newProjectCard.setAttribute("class", "active");
+
+  const defaultProject = document.querySelector('.active');
+  if (defaultProject !== null) {
   defaultProject.removeAttribute("class", "active");
   defaultProject.setAttribute("class", "inactive");
+  defaultProject.addEventListener("click", () => {
+    switchProject(defaultProject);
+  });}
+  const newProjectCard = document.createElement("div");
+  newProjectCard.setAttribute("class", "active");
   const newProjectTitle = document.getElementById("projectTitle").value;
   const newArr = [];
   projectObj[newProjectTitle] = newArr;
@@ -324,15 +369,14 @@ function addnewProject() {
   projectTitle.innerText = newProjectTitle;
   titleBar.appendChild(newProjectCard);
   newProjectCard.appendChild(projectTitle);
-  defaultProject.addEventListener("click", () => {
-    switchProject(defaultProject);
-  });
+ 
   newProjectCard.addEventListener("click", () => {
     switchProject(newProjectCard);
   });
 
   createIconBar(newProjectCard);
    hideProjectForm();
+   addCards();
 }
 
 function hideProjectForm() {
