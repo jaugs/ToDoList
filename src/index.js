@@ -293,23 +293,16 @@ function renameProject(elem) {
 function deleteProject(project) {
   const text = confirm("Are you sure you want to delete this Project? All attached To-Do Items will be deleted.");
       if (text == true) {
-        // arr.project = "deleted";
-        // console.log(arr.project);
-       
   const projectTitleBar = document.getElementById("projecttitleBar");
   project.setAttribute("class", "deleted")
   projectTitleBar.removeChild(project);
   const inactiveProject = document.querySelector('.inactive');
-  console.log(inactiveProject);
   if (inactiveProject !== null) {
   inactiveProject.setAttribute('class', 'active');
   addCards();
   } else if (inactiveProject == null) {
     createNewProject()
-  }
-  
-      }
-
+  }}
 }
 
 function createDeleteIcon() {
@@ -522,9 +515,11 @@ function addCards() {
 
 
     editButton.onclick = () => {
-      arr.project = "deleted";
-      cardTitle.removeChild(editButton);
-      createForm();
+      editToDoItem(arr, card);
+     // console.log(card);
+      // arr.project = "deleted";
+      // cardTitle.removeChild(editButton);
+      // createForm();
     };
 
     trashButton.onclick = () => {
@@ -541,7 +536,6 @@ function addCards() {
       card.setAttribute('class', 'expandCard');
       cardTitle.setAttribute('class', 'expandBar');
       cardBody.setAttribute('class', 'expandBody');
-      completeButton.setAttribute('class', 'completeexpandButton');
       priorityColor.setAttribute('class', 'expandPriority')
       cardBody.appendChild(title);
       titleValue.setAttribute('class', 'expandTitle');
@@ -553,6 +547,7 @@ function addCards() {
       cardBody.appendChild(descriptionValue);
       cardBody.appendChild(notes);
       cardBody.appendChild(noteValue);
+      cardTitle.removeChild(completeButton);
       cardTitle.appendChild(collapseButton);
       cardTitle.removeChild(expandButton);
 
@@ -560,8 +555,7 @@ function addCards() {
         card.setAttribute('class', 'card');
         cardTitle.setAttribute('class', 'cardBar');
         cardBody.setAttribute('class', 'cardBody');
-        completeButton.setAttribute('class', 'completeButton');
-        priorityColor.setAttribute('class', 'priorityColor')
+        priorityColor.setAttribute('class', 'priorityColor');
         trashButton.setAttribute('class', 'trashButton');
         titleValue.setAttribute('class', 'titleValue');
         dateValue.setAttribute('class', 'dateValue');
@@ -572,6 +566,7 @@ function addCards() {
         cardBody.removeChild(notes);
         cardBody.removeChild(noteValue);
         cardTitle.removeChild(editButton);
+        cardTitle.appendChild(completeButton);
         cardTitle.removeChild(collapseButton);
         cardTitle.appendChild(expandButton);
       };
@@ -595,6 +590,146 @@ function addCards() {
         displayCard(projectArray[r]);
       }}}
 }
+
+
+function editToDoItem(arr, card) {
+  const editItemForm = document.createElement('div');
+  editItemForm.setAttribute('class', 'editForm');
+  // document.body.appendChild(editItemForm);
+  const textBody = card.querySelector('.expandBody');
+  const title = card.querySelector('.expandTitle');
+  const date = card.querySelector('.expandDate');
+  const description = card.querySelector('.descriptionValue');
+  const notes = card.querySelector('.notesValue');
+  const priority = card.querySelector('.expandPriority');
+  title.onclick = () => {
+    const titleEditField = document.createElement('div')
+    titleEditField.setAttribute('class', 'expandTitle');
+    const titleInput = document.createElement('input')
+    titleInput.setAttribute('type', 'text');
+    titleInput.setAttribute('class', 'titleText');
+    titleInput.defaultValue = arr.title;
+    const titleButton = document.createElement('button')
+    titleButton.setAttribute('class', 'editItemButton');
+    textBody.removeChild(title)
+    titleEditField.appendChild(titleInput);
+    titleEditField.appendChild(titleButton);
+    textBody.appendChild(titleEditField);
+    titleButton.onclick = () => {
+      console.log('titlebnutton');
+    }
+  }
+
+
+
+
+  console.log(title)
+
+}
+  // const titleLabel = document.getE);
+//   titleLabel.setAttribute("class", "label");
+//   titleLabel.setAttribute("id", "titleLabel");
+//   titleLabel.innerText = "Item Title: (*)";
+//   content.appendChild(titleLabel);
+//   const title = document.createElement("input");
+//   title.setAttribute("type", "text");
+//   title.setAttribute("id", "title");
+//   title.setAttribute("class", "item");
+//   title.name = "todo_title"
+//   title.minLength =  3
+//   title.required = true;
+//   titleLabel.appendChild(title);
+
+//   const descriptionLabel = document.createElement("div");
+//   descriptionLabel.setAttribute("class", "label");
+//   descriptionLabel.setAttribute("id", "descriptionLabel");
+//   descriptionLabel.innerText = "Item Description:";
+//   content.appendChild(descriptionLabel);
+//   const description = document.createElement("textarea");
+//   description.maxlength = 1000;
+//   description.cols = 100;
+//   description.rows = 8;
+//   description.style.width = "17rem"
+//   description.setAttribute("id", "description");
+//   description.setAttribute("class", "item");
+//   descriptionLabel.appendChild(description);
+
+//   const dueLabel = document.createElement("div");
+//   dueLabel.setAttribute("class", "label");
+//   dueLabel.setAttribute("id", "dateLabel");
+//   dueLabel.innerText = "Due Date: (*)";
+//   content.appendChild(dueLabel);
+//   const dueDate = document.createElement("input");
+//   dueDate.setAttribute("type", "date");
+//   dueDate.setAttribute("id", "dueDate");
+//   dueDate.setAttribute("class", "item");
+//   dueLabel.appendChild(dueDate);
+
+//   const wrapper = document.createElement("div");
+//   wrapper.setAttribute("id", "priorityLabel");
+//   wrapper.setAttribute("class", "label");
+//   wrapper.innerText = "Set Priority for Item:";
+//   content.appendChild(wrapper);
+
+//   const options = {
+//     Urgent: false,
+//     High: false,
+//     Medium: false,
+//     Low: false,
+//   };
+
+//   // eslint-disable-next-line guard-for-in
+//   for (const key in options) {
+//     const label = document.createElement("label");
+//     label.innerText = key;
+//     const input = document.createElement("input");
+//     input.type = "radio";
+//     input.name = "priority";
+//     input.value = key;
+//     input.checked = true;
+//     label.appendChild(input);
+//     wrapper.appendChild(label);
+//   }
+
+//   const notesLabel = document.createElement("div");
+//   notesLabel.setAttribute("class", "label");
+//   notesLabel.setAttribute("id", "notesLabel");
+//   notesLabel.innerText = "Notes:";
+//   content.appendChild(notesLabel);
+//   const notes = document.createElement("textarea");
+//   notes.maxlength = 1000;
+//   notes.cols = 100;
+//   notes.rows = 8;
+//   notes.style.width = "35rem"
+//   notes.setAttribute("id", "notes");
+//   notes.setAttribute("class", "item");
+//   notesLabel.appendChild(notes);
+
+//   const undo = document.createElement("button");
+//   undo.setAttribute("id", "undoLabel");
+//   undo.setAttribute("class", "button");
+//   undo.innerText = "Back";
+//   content.appendChild(undo);
+//   undo.addEventListener("click", hideForm);
+  
+//   const submit = document.createElement("button");
+//   submit.setAttribute("id", "submitLabel");
+//   submit.innerText = "Submit"
+//   submit.setAttribute("class", "button");
+//   content.appendChild(submit);
+//   submit.onclick = () => {
+//     if ((title.value === '') && (dueDate.value === '')) {
+//       title.style.border = "6px solid red";
+//       dueDate.style.border = "6px solid red";
+//     } else if (title.value === '') {
+//       title.style.border = "6px solid red";
+//     } else if (dueDate.value === '') {
+//       dueDate.style.border = "6px solid red";
+//     } else {
+//     addtoDo();
+// }}}
+
+
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked
 function addtoDo() {
@@ -638,19 +773,11 @@ function saveWork() {
 }
 
 function removeForm() {
-  const formSpace = document.getElementById("formSpace");
   const content = document.getElementById("content");
-  // content.style.display = 'none';
   content.remove();
-  let addButton = document.getElementById("addTodo");
-  addButton.remove();
-  addButton = document.createElement("button");
-  addButton.setAttribute("id", "addTodo");
-  addButton.setAttribute("class", "button");
+  const addButton = document.getElementById("addTodo");
   addButton.innerText = "Add new Item";
-  formSpace.appendChild(addButton);
   addButton.addEventListener("click", createForm);
-  // currentProject.removeChild(content);
 }
 
 function cardDrag(card) {
@@ -660,7 +787,7 @@ function cardDrag(card) {
  // stops card from dragging when expanded
   card.onmousedown = function (event) {
     const attribute = card.getAttribute('class');
-    console.log(attribute);
+   // console.log(attribute);
     if (attribute == 'expandCard') {
      return
    }
@@ -668,7 +795,7 @@ function cardDrag(card) {
     const uncompleteButtons = document.querySelectorAll(".uncompleteButton");
     const trashButtons = document.querySelectorAll(".trashButton");
     const expandButtons = document.querySelectorAll(".expandButton");
-    console.log(expandButtons);
+    // console.log(expandButtons);
     const elementBelow = document.elementFromPoint(
       event.clientX,
       event.clientY
@@ -683,7 +810,7 @@ function cardDrag(card) {
       }}
       for (let i = 0; i < expandButtons.length; i++) {
       if (elementBelow == expandButtons[i]) {
-        console.log(elementBelow);
+       // console.log(elementBelow);
         return;
       }}
       for (let i = 0; i < uncompleteButtons.length; i++) {

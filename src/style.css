@@ -241,12 +241,12 @@ h2 {
   box-shadow: 0 2px #0f172a;
 }
 
-.completeexpandButton:hover, .expandButton:hover, .uncompleteButton:hover, .completeButton:hover, .editButton:hover, .collapseButton:hover {
+.expandButton:hover, .uncompleteButton:hover, .completeButton:hover, .editButton:hover, .collapseButton:hover {
   background-color: #334155;
   color: #f8fafc;
 }
 
-.completeexpandButton:active, .expandButton:active, .uncompleteButton:active, .completeButton:active, .editButton:active, .collapseButton:active  {
+.expandButton:active, .uncompleteButton:active, .completeButton:active, .editButton:active, .collapseButton:active  {
   background-color: #1e293b;
   color: #f8fafc;
   transform: translateY(4px);
@@ -272,15 +272,11 @@ h2 {
 .expandBar {
   padding: 2px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2fr;
   grid-template-areas:
-    "p p p"
-    "c e d";
-}
-
-.completeexpandButton {
-  grid-area: c;
+    "p p"
+    "e d";
 }
 
 .expandPriority {
