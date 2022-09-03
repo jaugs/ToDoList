@@ -436,13 +436,13 @@ function addCards() {
 
     const completeButton = document.createElement("button");
     completeButton.setAttribute("id", `complete_${arr.number}`);
-    completeButton.setAttribute("class", "cardButton");
+    completeButton.setAttribute("class", "completeButton");
     completeButton.innerText = "Complete";
     cardTitle.appendChild(completeButton);
  
     const uncompleteButton = document.createElement("button");
     uncompleteButton.setAttribute("id", `uncomplete_${arr.number}`);
-    uncompleteButton.setAttribute("class", "cardButton");
+    uncompleteButton.setAttribute("class", "uncompleteButton");
     uncompleteButton.innerText = "Edit";
     if (arr.complete == true) {
       cardTitle.appendChild(uncompleteButton);
@@ -452,7 +452,7 @@ function addCards() {
 
     const editButton = document.createElement("button");
     editButton.setAttribute("id", `edit_${arr.number}`);
-    editButton.setAttribute("class", "cardButton");
+    editButton.setAttribute("class", "editButton");
     editButton.innerText = "Modify";
     // cardTitle.appendChild(editButton);
 
@@ -535,6 +535,8 @@ function addCards() {
       card.setAttribute('class', 'expandCard');
       cardTitle.setAttribute('class', 'expandBar');
       cardBody.setAttribute('class', 'expandBody');
+      completeButton.setAttribute('class', 'completeexpandButton');
+      priorityColor.setAttribute('class', 'expandPriority')
       cardBody.appendChild(title);
       titleValue.setAttribute('class', 'expandTitle');
       cardBody.appendChild(date);
@@ -552,6 +554,8 @@ function addCards() {
         card.setAttribute('class', 'card');
         cardTitle.setAttribute('class', 'cardBar');
         cardBody.setAttribute('class', 'cardBody');
+        completeButton.setAttribute('class', 'completeButton');
+        priorityColor.setAttribute('class', 'priorityColor')
         trashButton.setAttribute('class', 'trashButton');
         titleValue.setAttribute('class', 'titleValue');
         dateValue.setAttribute('class', 'dateValue');
@@ -569,7 +573,7 @@ function addCards() {
 
     let collapseButton = document.createElement("button");
     collapseButton.setAttribute("id", `collapse_${arr.number}`);
-    collapseButton.setAttribute("class", "expandButton");
+    collapseButton.setAttribute("class", "collapseButton");
     collapseButton.innerText = "Collapse";
    
     cardDrag(card);
@@ -654,7 +658,7 @@ function cardDrag(card) {
     if (attribute == 'expandCard') {
      return
    }
-    const buttons = document.querySelectorAll(".cardButton");
+    const buttons = document.querySelectorAll(".completeButton");
     const trashButtons = document.querySelectorAll(".trashButton");
     const expandCards = document.querySelectorAll(".expandCard");
     const expandButtons = document.querySelectorAll(".expandButton");
