@@ -199,7 +199,6 @@ h2 {
     height: 159px;
     font-size: 26px;
     gap: 2px;
-
 }
 
 .cardBar {
@@ -472,7 +471,7 @@ h2 {
 
 #content {
   position: fixed;
-  top: 18vh;
+  top: 9vh;
   left: 35vw;
   overflow: auto;
   width: 48rem;

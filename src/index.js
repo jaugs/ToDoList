@@ -96,6 +96,7 @@ function createProjectObject() {
     // if (projectObj.length)
     return projectObj;
   }
+
   const projectObj = {
     Default: toDoArr,
   };
@@ -434,6 +435,12 @@ function addCards() {
     }
     cardTitle.appendChild(priorityColor);
 
+    const expandButton = document.createElement("button");
+    expandButton.setAttribute("id", `expand_${arr.number}`);
+    expandButton.setAttribute("class", "expandButton");
+    expandButton.innerText = "Expand";
+    cardTitle.appendChild(expandButton);
+
     const completeButton = document.createElement("button");
     completeButton.setAttribute("id", `complete_${arr.number}`);
     completeButton.setAttribute("class", "completeButton");
@@ -447,6 +454,7 @@ function addCards() {
     if (arr.complete == true) {
       cardTitle.appendChild(uncompleteButton);
       cardTitle.removeChild(completeButton);
+      cardTitle.removeChild(expandButton);
     }
 
 
@@ -456,11 +464,7 @@ function addCards() {
     editButton.innerText = "Modify";
     // cardTitle.appendChild(editButton);
 
-    const expandButton = document.createElement("button");
-    expandButton.setAttribute("id", `expand_${arr.number}`);
-    expandButton.setAttribute("class", "expandButton");
-    expandButton.innerText = "Expand";
-    cardTitle.appendChild(expandButton);
+
 
     const trashButton = new Image();
     trashButton.src = trashIcon;
@@ -505,6 +509,7 @@ function addCards() {
       priorityColor.setAttribute("id", "complete");
       cardTitle.appendChild(uncompleteButton);
       cardTitle.removeChild(completeButton);
+      cardTitle.removeChild(expandButton);
     };
       uncompleteButton.onclick = () => {
         cardBody.setAttribute("class", "cardBody");
@@ -512,6 +517,7 @@ function addCards() {
         priorityColor.setAttribute("id", arr.priority);
         cardTitle.appendChild(completeButton);
         cardTitle.removeChild(uncompleteButton);
+        cardTitle.appendChild(expandButton);
       };
 
 
@@ -658,28 +664,32 @@ function cardDrag(card) {
     if (attribute == 'expandCard') {
      return
    }
-    const buttons = document.querySelectorAll(".completeButton");
+    const completeButtons = document.querySelectorAll(".completeButton");
+    const uncompleteButtons = document.querySelectorAll(".uncompleteButton");
     const trashButtons = document.querySelectorAll(".trashButton");
-    const expandCards = document.querySelectorAll(".expandCard");
     const expandButtons = document.querySelectorAll(".expandButton");
+    console.log(expandButtons);
     const elementBelow = document.elementFromPoint(
       event.clientX,
       event.clientY
     );
-    for (let i = 0; i < buttons.length; i++) {
-      if (elementBelow == buttons[i]) {
+    for (let i = 0; i < completeButtons.length; i++) {
+      if (elementBelow == completeButtons[i]) {
         return;
-      }
+      }}
+      for (let i = 0; i < trashButtons.length; i++) {
       if (elementBelow == trashButtons[i]) {
         return;
-      }
-      if (elementBelow == expandCards[i]) {
-        return;
-      }
+      }}
+      for (let i = 0; i < expandButtons.length; i++) {
       if (elementBelow == expandButtons[i]) {
+        console.log(elementBelow);
         return;
-      }
-    }
+      }}
+      for (let i = 0; i < uncompleteButtons.length; i++) {
+      if (elementBelow == uncompleteButtons[i]) {
+        return;
+      }}
 
     const shiftX = event.clientX - card.getBoundingClientRect().left;
     const shiftY = event.clientY - card.getBoundingClientRect().top;
