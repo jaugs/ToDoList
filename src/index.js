@@ -20,6 +20,7 @@ import { format, parseISO } from 'date-fns';
 import { createForm } from "./form.js";
 import trashIcon from "./trash.svg";
 import editIcon from "./edit.svg";
+import wrenchIcon from "./wrench.svg";
 
 export { addtoDo };
 // sdfgddgsdg
@@ -593,37 +594,56 @@ function addCards() {
 
 
 function editToDoItem(arr, card) {
-  const editItemForm = document.createElement('div');
-  editItemForm.setAttribute('class', 'editForm');
-  // document.body.appendChild(editItemForm);
-  const textBody = card.querySelector('.expandBody');
-  const title = card.querySelector('.expandTitle');
-  const date = card.querySelector('.expandDate');
-  const description = card.querySelector('.descriptionValue');
-  const notes = card.querySelector('.notesValue');
-  const priority = card.querySelector('.expandPriority');
-  title.onclick = () => {
-    const titleEditField = document.createElement('div')
-    titleEditField.setAttribute('class', 'expandTitle');
-    const titleInput = document.createElement('input')
-    titleInput.setAttribute('type', 'text');
-    titleInput.setAttribute('class', 'titleText');
-    titleInput.defaultValue = arr.title;
-    const titleButton = document.createElement('button')
-    titleButton.setAttribute('class', 'editItemButton');
-    textBody.removeChild(title)
-    titleEditField.appendChild(titleInput);
-    titleEditField.appendChild(titleButton);
-    textBody.appendChild(titleEditField);
-    titleButton.onclick = () => {
-      console.log('titlebnutton');
-    }
+ 
+  function createEditIcon (idField) {
+  const editButton = new Image();
+  editButton.src = wrenchIcon;
+  editButton.title = "Edit Field";
+  editButton.setAttribute('class', 'wrenchButton');
+  editButton.setAttribute('id', idField);
+  return editButton;
   }
 
+  const titleDiv = card.querySelector('.expandTitle');
+  titleDiv.appendChild(createEditIcon('titleEdit'))
+  const titleEdit = document.getElementById('titleEdit');
+  titleEdit.onclick = () => { addEditBox(titleDiv, arr.title)};
+  
+  const descriptionDiv = card.querySelector('.descriptionValue');
+  descriptionDiv.appendChild(createEditIcon('descriptionEdit'))
+  const descriptionEdit = document.getElementById('descriptionEdit');
+  descriptionEdit.onclick = () => { addEditBox(descriptionDiv, arr.description)};
+  
+  const notesDiv = card.querySelector('.notesValue');
+  notesDiv.appendChild(createEditIcon('notesEdit'))
+  const notesEdit = document.getElementById('notesEdit');
+  notesEdit.onclick = () => { addEditBox(notesDiv, arr.notes)};
+ 
+ // const priorityDiv = card.querySelector('.expandPriority');
+ // const dateDiv = card.querySelector('.expandDate');
+  
+  
+
+  function addEditBox (div, classValue) {
+   
+    const textInput = document.createElement('input')
+    textInput.setAttribute('type', 'text');
+    textInput.setAttribute('class', 'titleText');
+    textInput.defaultValue = classValue;
+    const confirmButton = document.createElement('button')
+    confirmButton.setAttribute('class', 'editItemButton');
+    confirmButton.innerText = "Ok"
+    div.innerText = '';
+    div.appendChild(textInput);
+    div.appendChild(confirmButton);
+    confirmButton.onclick = () => {
+      classValue = textInput.value;
+      console.log(arr);
+      // console.log(textInput.value);
 
 
-
-  console.log(title)
+     // console.log('titlebnutton');
+  }}
 
 }
   // const titleLabel = document.getE);
