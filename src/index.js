@@ -435,6 +435,11 @@ function addCards() {
     expandButton.innerText = "Expand";
     cardTitle.appendChild(expandButton);
 
+    const collapseButton = document.createElement("button");
+    collapseButton.setAttribute("id", `collapse_${arr.number}`);
+    collapseButton.setAttribute("class", "collapseButton");
+    collapseButton.innerText = "Collapse";
+   
     const completeButton = document.createElement("button");
     completeButton.setAttribute("id", `complete_${arr.number}`);
     completeButton.setAttribute("class", "completeButton");
@@ -456,8 +461,10 @@ function addCards() {
     editButton.setAttribute("id", `edit_${arr.number}`);
     editButton.setAttribute("class", "editButton");
     editButton.innerText = "Modify";
-    // cardTitle.appendChild(editButton);
-
+   
+    const hideEditButton = document.createElement("button");
+    hideEditButton.setAttribute("class", "hideEditButton");
+    hideEditButton.innerText = "Hide";
 
 
     const trashButton = new Image();
@@ -517,11 +524,18 @@ function addCards() {
 
     editButton.onclick = () => {
       editToDoItem(arr, card);
-     // console.log(card);
-      // arr.project = "deleted";
-      // cardTitle.removeChild(editButton);
-      // createForm();
-    };
+      cardTitle.removeChild(editButton);
+      cardTitle.appendChild(hideEditButton);
+    }
+
+    hideEditButton.onclick = () => {
+      const icons = cardBody.querySelectorAll('.wrenchButton')
+        for (let i = 0; i < icons.length; i++) {
+          icons[i].remove();
+        }
+        cardTitle.removeChild(hideEditButton);
+        cardTitle.appendChild(editButton);
+      }
 
     trashButton.onclick = () => {
       const text = confirm("Are you sure you want to delete this To-Do?");
@@ -551,7 +565,7 @@ function addCards() {
       cardTitle.removeChild(completeButton);
       cardTitle.appendChild(collapseButton);
       cardTitle.removeChild(expandButton);
-
+    }
       collapseButton.onclick = () => {
         card.setAttribute('class', 'card');
         cardTitle.setAttribute('class', 'cardBar');
@@ -560,26 +574,32 @@ function addCards() {
         trashButton.setAttribute('class', 'trashButton');
         titleValue.setAttribute('class', 'titleValue');
         dateValue.setAttribute('class', 'dateValue');
+        const icons = cardBody.querySelectorAll('.wrenchButton')
+        for (let i = 0; i < icons.length; i++) {
+          icons[i].remove();
+        }
         cardBody.removeChild(title);
         cardBody.removeChild(date);
         cardBody.removeChild(description);
         cardBody.removeChild(descriptionValue);
         cardBody.removeChild(notes);
         cardBody.removeChild(noteValue);
+        const editCheck = card.querySelector('.editButton');
+        const hideEditCheck = card.querySelector('.hideEditButton');
+        if (editCheck !== null) {
         cardTitle.removeChild(editButton);
+        } else if (hideEditCheck !== null) {
+          cardTitle.removeChild(hideEditButton);
+        }
         cardTitle.appendChild(completeButton);
         cardTitle.removeChild(collapseButton);
         cardTitle.appendChild(expandButton);
+      
       };
+
+      cardDrag(card);
     };
 
-    let collapseButton = document.createElement("button");
-    collapseButton.setAttribute("id", `collapse_${arr.number}`);
-    collapseButton.setAttribute("class", "collapseButton");
-    collapseButton.innerText = "Collapse";
-   
-    cardDrag(card);
-  }
 
 // runs displayCard function for ToDO items in the inactive array that have moved to the new project
   const allInactive = document.querySelectorAll(".inactive");
@@ -605,150 +625,82 @@ function editToDoItem(arr, card) {
   }
 
   const titleDiv = card.querySelector('.expandTitle');
-  titleDiv.appendChild(createEditIcon('titleEdit'))
+  titleDiv.appendChild(createEditIcon('titleEdit'));
   const titleEdit = document.getElementById('titleEdit');
-  titleEdit.onclick = () => { addEditBox(titleDiv, arr.title)};
-  
+  titleEdit.onclick = () => {
+   addEditBox(titleDiv, arr.title, 'titleConfirm')
+   const titleInput = titleDiv.querySelector('.textInput')
+   const confirmButton = document.getElementById('titleConfirm')
+   confirmButton.onclick = () => {
+    const newTitle = titleInput.value
+    arr.title = newTitle;
+    titleInput.remove();
+    confirmButton.remove();
+    titleDiv.innerText = arr.title;
+    console.log(arr);
+   }  
+  };
+   
   const descriptionDiv = card.querySelector('.descriptionValue');
-  descriptionDiv.appendChild(createEditIcon('descriptionEdit'))
+  descriptionDiv.appendChild(createEditIcon('descriptionEdit'));
   const descriptionEdit = document.getElementById('descriptionEdit');
-  descriptionEdit.onclick = () => { addEditBox(descriptionDiv, arr.description)};
+  descriptionEdit.onclick = () => { 
+    addEditBox(descriptionDiv, arr.description, 'descriptionConfirm')
+    const textInput = descriptionDiv.querySelector('.textInput')
+    const confirmButton = document.getElementById('descriptionConfirm')
+    confirmButton.onclick = () => {
+     const newdescription = textInput.value
+     arr.description = newdescription;
+     textInput.remove();
+     confirmButton.remove();
+     descriptionDiv.innerText = arr.description;
+     console.log(arr);
+    }  
+  };
   
   const notesDiv = card.querySelector('.notesValue');
   notesDiv.appendChild(createEditIcon('notesEdit'))
   const notesEdit = document.getElementById('notesEdit');
-  notesEdit.onclick = () => { addEditBox(notesDiv, arr.notes)};
- 
- // const priorityDiv = card.querySelector('.expandPriority');
- // const dateDiv = card.querySelector('.expandDate');
-  
-  
+  notesEdit.onclick = () => { 
+    addEditBox(notesDiv, arr.notes, 'notesConfirm')
+    const textInput = notesDiv.querySelector('.textInput')
+    const confirmButton = document.getElementById('notesConfirm')
+    confirmButton.onclick = () => {
+     const newNotes = textInput.value
+     arr.notes = newNotes;
+     textInput.remove();
+     confirmButton.remove();
+     notesDiv.innerText = arr.notes;
+     console.log(arr);
+    }  
+  };
 
-  function addEditBox (div, classValue) {
-   
+  function addEditBox (div, classValue, id) {
     const textInput = document.createElement('input')
     textInput.setAttribute('type', 'text');
-    textInput.setAttribute('class', 'titleText');
+    textInput.setAttribute('class', 'textInput');
     textInput.defaultValue = classValue;
     const confirmButton = document.createElement('button')
     confirmButton.setAttribute('class', 'editItemButton');
+    confirmButton.setAttribute('id', id);
     confirmButton.innerText = "Ok"
     div.innerText = '';
     div.appendChild(textInput);
     div.appendChild(confirmButton);
-    confirmButton.onclick = () => {
-      classValue = textInput.value;
-      console.log(arr);
-      // console.log(textInput.value);
+}
+//  const priorityDiv = card.querySelector('.expandPriority');
+//  priorityDiv.setAttribute('class', 'editPriority')
+//  priorityDiv.appendChild(createEditIcon('priorityEdit'))
+//  const priorityEdit = document.getElementById('priorityEdit');
+//  priorityEdit.onclick = () => {
 
+//  }
+ // const dateDiv = card.querySelector('.expandDate');
+ 
+ 
 
-     // console.log('titlebnutton');
-  }}
 
 }
-  // const titleLabel = document.getE);
-//   titleLabel.setAttribute("class", "label");
-//   titleLabel.setAttribute("id", "titleLabel");
-//   titleLabel.innerText = "Item Title: (*)";
-//   content.appendChild(titleLabel);
-//   const title = document.createElement("input");
-//   title.setAttribute("type", "text");
-//   title.setAttribute("id", "title");
-//   title.setAttribute("class", "item");
-//   title.name = "todo_title"
-//   title.minLength =  3
-//   title.required = true;
-//   titleLabel.appendChild(title);
-
-//   const descriptionLabel = document.createElement("div");
-//   descriptionLabel.setAttribute("class", "label");
-//   descriptionLabel.setAttribute("id", "descriptionLabel");
-//   descriptionLabel.innerText = "Item Description:";
-//   content.appendChild(descriptionLabel);
-//   const description = document.createElement("textarea");
-//   description.maxlength = 1000;
-//   description.cols = 100;
-//   description.rows = 8;
-//   description.style.width = "17rem"
-//   description.setAttribute("id", "description");
-//   description.setAttribute("class", "item");
-//   descriptionLabel.appendChild(description);
-
-//   const dueLabel = document.createElement("div");
-//   dueLabel.setAttribute("class", "label");
-//   dueLabel.setAttribute("id", "dateLabel");
-//   dueLabel.innerText = "Due Date: (*)";
-//   content.appendChild(dueLabel);
-//   const dueDate = document.createElement("input");
-//   dueDate.setAttribute("type", "date");
-//   dueDate.setAttribute("id", "dueDate");
-//   dueDate.setAttribute("class", "item");
-//   dueLabel.appendChild(dueDate);
-
-//   const wrapper = document.createElement("div");
-//   wrapper.setAttribute("id", "priorityLabel");
-//   wrapper.setAttribute("class", "label");
-//   wrapper.innerText = "Set Priority for Item:";
-//   content.appendChild(wrapper);
-
-//   const options = {
-//     Urgent: false,
-//     High: false,
-//     Medium: false,
-//     Low: false,
-//   };
-
-//   // eslint-disable-next-line guard-for-in
-//   for (const key in options) {
-//     const label = document.createElement("label");
-//     label.innerText = key;
-//     const input = document.createElement("input");
-//     input.type = "radio";
-//     input.name = "priority";
-//     input.value = key;
-//     input.checked = true;
-//     label.appendChild(input);
-//     wrapper.appendChild(label);
-//   }
-
-//   const notesLabel = document.createElement("div");
-//   notesLabel.setAttribute("class", "label");
-//   notesLabel.setAttribute("id", "notesLabel");
-//   notesLabel.innerText = "Notes:";
-//   content.appendChild(notesLabel);
-//   const notes = document.createElement("textarea");
-//   notes.maxlength = 1000;
-//   notes.cols = 100;
-//   notes.rows = 8;
-//   notes.style.width = "35rem"
-//   notes.setAttribute("id", "notes");
-//   notes.setAttribute("class", "item");
-//   notesLabel.appendChild(notes);
-
-//   const undo = document.createElement("button");
-//   undo.setAttribute("id", "undoLabel");
-//   undo.setAttribute("class", "button");
-//   undo.innerText = "Back";
-//   content.appendChild(undo);
-//   undo.addEventListener("click", hideForm);
-  
-//   const submit = document.createElement("button");
-//   submit.setAttribute("id", "submitLabel");
-//   submit.innerText = "Submit"
-//   submit.setAttribute("class", "button");
-//   content.appendChild(submit);
-//   submit.onclick = () => {
-//     if ((title.value === '') && (dueDate.value === '')) {
-//       title.style.border = "6px solid red";
-//       dueDate.style.border = "6px solid red";
-//     } else if (title.value === '') {
-//       title.style.border = "6px solid red";
-//     } else if (dueDate.value === '') {
-//       dueDate.style.border = "6px solid red";
-//     } else {
-//     addtoDo();
-// }}}
-
 
 
 // Adds To Do items from Form into List Item Objects, then adds them to appropriate Project Array after form Submit Button is clicked

@@ -227,7 +227,7 @@ h2 {
   grid-area: e
 }
 
-.completeexpandButton, .expandButton, .uncompleteButton , .completeButton, .editButton, .collapseButton {
+.completeexpandButton, .expandButton, .uncompleteButton , .completeButton, .editButton, .hideEditButton, .collapseButton {
   justify-self: center;
   background-color: #fcfdfd;
   color: #0f172a;
@@ -241,12 +241,12 @@ h2 {
   box-shadow: 0 2px #0f172a;
 }
 
-.expandButton:hover, .uncompleteButton:hover, .completeButton:hover, .editButton:hover, .collapseButton:hover {
+.expandButton:hover, .uncompleteButton:hover, .completeButton:hover, .editButton:hover, .hideEditButton:hover, .collapseButton:hover {
   background-color: #334155;
   color: #f8fafc;
 }
 
-.expandButton:active, .uncompleteButton:active, .completeButton:active, .editButton:active, .collapseButton:active  {
+.expandButton:active, .uncompleteButton:active, .completeButton:active, .editButton:active, .hideEditButton:active, .collapseButton:active  {
   background-color: #1e293b;
   color: #f8fafc;
   transform: translateY(4px);
@@ -259,7 +259,7 @@ h2 {
   border: 2px solid black;
   background-color: #cbd5e1;
   border-radius: 15px;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   padding: 0px 5px 5px 5px;
   align-items: center;
@@ -287,9 +287,21 @@ h2 {
   border: 2px solid #0f172a;
 }
 
+.editPriority {
+  grid-area: p;
+  width: 90%;
+  height: 12px;
+  border-radius: 15px;
+  border: 3px dashed white;
+}
+
 .editButton {
  grid-area: e;
 }
+
+.hideEditButton {
+  grid-area: e;
+ }
 
 .collapseButton {
   grid-area: d;
@@ -344,7 +356,7 @@ h2 {
 
 .expandBody {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 2fr;
   grid-template-rows: 1fr 1fr 4fr 4fr 1fr;
   grid-template-areas:
   "t tv"
@@ -358,21 +370,20 @@ h2 {
 .titleField {
   display:flex;
   justify-content: center;
-  width: 18rem;
+  width: 10rem;
   grid-area: t;
   align-self: center;
   justify-self: center;
   padding: 5px;
   border-bottom: 1px solid #0f172a;
-  
-
+  padding: 5px;
 }
+
 .expandTitle {
   grid-area: tv;
   align-self: center;
   justify-self: flex-start;
   padding: 5px;
-  border-bottom: 1px solid #0f172a;
 }
 
 .dateField {
@@ -380,29 +391,33 @@ h2 {
   display:flex;
   justify-content: center;
   border-bottom: 1px solid #0f172a;
-  width: 18rem;
+  width: 10rem;
   align-self: center;
   justify-self: center;
+  padding: 5px;
 }
 .expandDate {
   grid-area: dv;
   align-self: center;
   justify-self: flex-start;
+  padding: 5px;
 }
 
 .descriptionField {
   grid-area: s;
   display:flex;
   justify-content: center;
-  width: 18rem;
+  width: 10rem;
   align-self: center;
   justify-self: center;
   border-bottom: 1px solid #0f172a;
+  padding: 5px;
 }
 .descriptionValue {
   grid-area: sv;
   align-self: center;
   justify-self: flex-start;
+  padding: 5px;
 }
 
 .notesField {
@@ -410,22 +425,26 @@ h2 {
   display:flex;
   justify-content: center;
   border-bottom: 1px solid #0f172a;
-  width: 18rem;
+  width: 10rem;
   align-self: center;
   justify-self: center;
+  padding: 5px;
 }
 .notesValue {
   grid-area: nv;
   align-self: center;
   justify-self: flex-start;
+  padding: 5px;
 }
 
 .wrenchButton {
-  width: 1.5rem;
+  width: 1.3rem;
+  background-color: #fcfdfd;
   border: 2px solid black;
+  box-shadow: 0 2px #0f172a;
   border-radius: 20px;
   padding: 4px;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .trashExpand {
@@ -441,12 +460,12 @@ h2 {
   border: 2px solid #0f172a;
 }
 
-.trashExpand:hover {
-  background-color: #cbd5e1;
+.trashExpand:hover, .wrenchButton:hover {
+  background-color: #334155;
   color: #f8fafc;
 }
 
-.trashExpand:active {
+.trashExpand:active, .wrenchButton:active {
   background-color: #475569;
   color: #f8fafc;
   transform: translateY(4px);
